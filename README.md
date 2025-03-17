@@ -1,25 +1,14 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+### Liar's Bar
 
-### Folosiți template-ul corespunzător grupei voastre!
+Ești în vizită prin Mama Rusia și ți se face sete, așa că intri în primul bar pe care îl vezi, ca să tragi și tu la măsea ceva bun.
+Te așezi frumos la masă și vezi cum vin trei rusnaci la tine. Ei te forțează să joci jocul lor, care este o combinație dintre Trombon și Ruleta rusească, iar dacă refuzi să te joci ești **cooked**.
+Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dintre ei te vei juca.
 
-| Laborant  | Link template                                |
-|-----------|----------------------------------------------|
-| Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
-| Marius MC | https://github.com/mcmarius/oop-template     |
+## Instrucțiuni (fraierii citesc instrucțiuni, dar aici te joci cu viața ta...)
+În funcție de masa aleasă random de unul dintre ruși la începutul fiecărei runde, trebuie să minți cât de bine poți sau să încerci să ghicești dacă unul dintre ruși a mințit.
+Fiecare dintre voi are cinci cărți din mulțimea {Q, K, A, JOKER}, precum și un revolver cu un glonț din șase.
+Pe scurt, dacă pierzi o rundă, ești cu un pas mai aproape de moarte. :) **Succes**!
 
-### Important!
-
-Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
-Codul generat pus "ca să fie"/pe care nu îl înțelegeți se punctează doar pentru puncte bonus, doar în contextul
-în care oferă funcționalități ajutătoare și doar dacă are sens.
-
-O cerință nu se consideră îndeplinită dacă este realizată doar prin cod generat.
-
-- **Fără cod de umplutură/fără sens!**
-- **Fără copy-paste!**
-- **Fără variabile globale!**
-- **Fără atribute publice!**
 
 ### Tema 0
 
