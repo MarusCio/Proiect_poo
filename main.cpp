@@ -64,10 +64,10 @@ class Player {
 
 
 public:
-    Player(const std::string& nume,Pachet_carti& mana,int viata) {
+    Player(const std::string& nume,Pachet_carti& mana, const int viata) {
         this->nume=nume;
         this->mana=mana.Extrage_mana();
-        this->viata=0;
+        this->viata=viata;
         this->carti_alese={};
     }
 
