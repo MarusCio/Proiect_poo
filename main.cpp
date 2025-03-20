@@ -118,7 +118,8 @@ public:
         }
 
         while (nr_carti <1 || nr_carti >3) {
-            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3, respectiv numarul tau de carti din mana"<<std::endl;\
+            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3, respectiv numarul tau de carti din mana"<<std::endl;
+            std::cin.get();
             std::cin>>nr_carti;
         }
 
