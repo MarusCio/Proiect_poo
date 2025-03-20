@@ -16,9 +16,7 @@ public:
             "JOKER","JOKER"} {};
 
 
-    Pachet_carti(const Pachet_carti &x) {
-        carti = x.carti;
-    }
+    Pachet_carti(const Pachet_carti &x): carti{x.carti} {};
 
     ~Pachet_carti() = default;
 
@@ -64,10 +62,10 @@ class Player {
 
 
 public:
-    Player(const std::string& nume,Pachet_carti& mana, const int viata) {
+    Player(const std::string& nume,Pachet_carti& mana,int viata) {
         this->nume=nume;
         this->mana=mana.Extrage_mana();
-        this->viata=viata;
+        this->viata=0;
         this->carti_alese={};
     }
 
@@ -111,7 +109,7 @@ public:
             return false;
         }
 
-        std::cout<<nume<<", alege un numar de carti intre 1 si min(3,numarul tau de carți din mana) : ";
+        std::cout<<nume<<", alege un numar de carti intre 1 si 3 : ";
         std::cin>>nr_carti;
 
         while (nr_carti > static_cast<int>(mana.size())){
@@ -120,7 +118,7 @@ public:
         }
 
         while (nr_carti <1 || nr_carti >3) {
-            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3, respectiv numarul tau de carti din mana"<<std::endl;
+            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3"<<std::endl;
             std::cin>>nr_carti;
         }
 
@@ -158,7 +156,7 @@ public:
         std::cout<<std::endl;
     }
 
-    std::vector<int> getCartiAlese() const {
+    [[nodiscard]] std::vector<int> getCartiAlese() const {
         return carti_alese;
     }
 
@@ -221,9 +219,9 @@ class Joc {
 
 public:
 
-    void Alege_nr_playeri() {
-        std::cin>>nr_playeri;
-    }
+    // void Alege_nr_playeri() {
+    //     std::cin>>nr_playeri;
+    // }
 
     Joc() = default;
     ~Joc() = default;
@@ -233,11 +231,12 @@ public:
     }
 
     bool Minte(Player& player, Player& adversar, const Table& table) {
-        bool minciuna;
+        int minciuna;
 
         std::cout<<"daca crezi ca minte, scrie 1, altfel scrie 0: ";
         std::cin>>minciuna;
 
+        if (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
         if (minciuna==1) {
             std::vector<int> carti_jucator = player.getCartiAlese();
             int masa_aleasa = table.Table_index();
@@ -245,11 +244,12 @@ public:
                                              [masa_aleasa](int carte) { return carte == masa_aleasa || carte==4; });
 
             if (!toate_corecte) {
+                std::cout<<"A mintit! ";
                 player.CresteViata();
                 return true;
             }
             else {
-                std::cout<<"nu a mintit!"<<std::endl;
+                std::cout<<"Nu a mintit! "<<std::endl;
                 adversar.CresteViata();
                 return true;
             }
@@ -268,10 +268,10 @@ int main() {
     table.setTableName();
     table.Afis_TableName();
 
-    Player player1("Stefi", pachet,0);
+    Player player1("Marius", pachet,0);
     player1.Afis_Mana();
 
-    Player player2("Marus", pachet,0);
+    Player player2("Ivan", pachet,0);
     player2.Afis_Mana();
 
     while (player1.Get_viata()<6 && player2.Get_viata()<6) {
