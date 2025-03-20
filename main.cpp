@@ -46,8 +46,8 @@ public:
 
     static void Afis_Mana(const std::vector<std::string>& mana) {
         std::cout<<"Mana: ";
-        for(size_t i=0;i<mana.size();i++) {
-            std::cout<<mana[i]<<" ";
+        for(const auto & i : mana) {
+            std::cout<<i<<" ";
         }
     }
 
@@ -62,10 +62,10 @@ class Player {
 
 
 public:
-    Player(const std::string& nume,Pachet_carti& mana,int viata) {
+    Player(const std::string& nume,Pachet_carti& mana, const int viata) {
         this->nume=nume;
         this->mana=mana.Extrage_mana();
-        this->viata=0;
+        this->viata=viata;
         this->carti_alese={};
     }
 
@@ -109,7 +109,7 @@ public:
             return false;
         }
 
-        std::cout<<nume<<", alege un numar de carti intre 1 si 3 : ";
+        std::cout<<nume<<", alege un numar de carti intre 1 si min(3,numarul tau de carti din mana) : ";
         std::cin>>nr_carti;
 
         while (nr_carti > static_cast<int>(mana.size())){
@@ -118,7 +118,7 @@ public:
         }
 
         while (nr_carti <1 || nr_carti >3) {
-            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3"<<std::endl;
+            std::cout<<"Ai voie sa selectezi minim o carte si maxim 3, respectiv numarul tau de carti din mana"<<std::endl;\
             std::cin>>nr_carti;
         }
 
@@ -156,11 +156,11 @@ public:
         std::cout<<std::endl;
     }
 
-    [[nodiscard]] std::vector<int> getCartiAlese() const {
+    [[nodiscard]] const std::vector<int>& getCartiAlese() const {
         return carti_alese;
     }
 
-    bool Fara_carti() const {
+    [[nodiscard]] bool Fara_carti() const {
         return mana.empty();
     }
 
@@ -175,7 +175,7 @@ public:
         else std::cout<<nume<<" acum are "<<viata<<" viata"<<std::endl;
     }
 
-    int Get_viata() const {
+    [[nodiscard]] int Get_viata() const {
         return viata;
     }
 
@@ -254,6 +254,7 @@ public:
                 return true;
             }
         }
+        std::cout<<std::endl;
         return false;
     }
 
@@ -264,6 +265,7 @@ int main() {
     Pachet_carti pachet;
     Table table;
     Joc joc;
+    int nr_juc = 0;
     pachet.Amesteca_pachet();
     table.setTableName();
     table.Afis_TableName();
@@ -275,15 +277,15 @@ int main() {
     player2.Afis_Mana();
 
     while (player1.Get_viata()<6 && player2.Get_viata()<6) {
-
+        nr_juc=0;
         while (!player1.Fara_carti() && !player2.Fara_carti()) {
             if (!player1.Alege_carti()) break;
             std::cout << std::endl;
-            if (joc.Minte(player1,player2, table)) break;
+            if (joc.Minte(player1,player2, table)) {nr_juc=1;break;}
 
             if (!player2.Alege_carti()) break;
             std::cout << std::endl;
-            if (joc.Minte(player2,player1,table)) break;
+            if (joc.Minte(player2,player1,table)) {nr_juc=2;break;}
         }
         if (player1.Get_viata() >= 6 || player2.Get_viata() >= 6) break;
 
@@ -294,8 +296,15 @@ int main() {
         pachet.Amesteca_pachet();
         table.setTableName();
         table.Afis_TableName();
-        player1.reset_carti(pachet);
-        player2.reset_carti(pachet);
+        if(nr_juc==1){
+            player1.reset_carti(pachet);
+            player2.reset_carti(pachet);
+        }
+        else if (nr_juc==2) {
+            player2.reset_carti(pachet);
+            player1.reset_carti(pachet);
+        }
+
         std::cout<<std::endl;
     }
     std::cout << "Gata joculetul" << std::endl;
