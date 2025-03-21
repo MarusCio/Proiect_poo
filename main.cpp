@@ -182,7 +182,7 @@ public:
         return viata;
     }
 
-    std::string Get_Nume() {
+    [[nodiscard]] std::string Get_Nume() const {
         return nume;
     }
 };
