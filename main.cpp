@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <random>
 #include <algorithm>
+// #include <SFML/Graphics.hpp>
+// #include <chrono>
+// #include <thread>
 
 class Pachet_carti {
     std::vector<std::string>carti;
@@ -109,7 +112,7 @@ public:
             return false;
         }
 
-        std::cout<<nume<<", alege un numar de carti intre 1 si min(3,numarul tau de carti din mana) : ";
+        std::cout<<nume<<", alege un numar de carti intre 1 si "<<std::min(3,static_cast<int>(mana.size()))<< ": ";
         std::cin>>nr_carti;
 
         while (nr_carti > static_cast<int>(mana.size())){
@@ -119,7 +122,6 @@ public:
 
         while (nr_carti <1 || nr_carti >3) {
             std::cout<<"Ai voie sa selectezi minim o carte si maxim 3, respectiv numarul tau de carti din mana"<<std::endl;
-            std::cin.get();
             std::cin>>nr_carti;
         }
 
@@ -180,6 +182,9 @@ public:
         return viata;
     }
 
+    std::string Get_Nume() {
+        return nume;
+    }
 };
 
 class Table{
@@ -216,7 +221,7 @@ public:
 
 
 class Joc {
-    std::string nr_playeri;
+    // std::string nr_playeri;
 
 public:
 
@@ -227,14 +232,14 @@ public:
     Joc() = default;
     ~Joc() = default;
 
-    explicit Joc(std::string nr_playeri)
-        : nr_playeri(std::move(nr_playeri)) {
-    }
+    // explicit Joc(std::string nr_playeri)
+    //     : nr_playeri(std::move(nr_playeri)) {
+    // }
 
     bool Minte(Player& player, Player& adversar, const Table& table) {
         int minciuna;
 
-        std::cout<<"daca crezi ca minte, scrie 1, altfel scrie 0: ";
+        std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<player.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
         std::cin>>minciuna;
 
         if (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
@@ -245,12 +250,12 @@ public:
                                              [masa_aleasa](int carte) { return carte == masa_aleasa || carte==4; });
 
             if (!toate_corecte) {
-                std::cout<<"A mintit! ";
+                std::cout<<player.Get_Nume()<<" a mintit! ";
                 player.CresteViata();
                 return true;
             }
             else {
-                std::cout<<"Nu a mintit! "<<std::endl;
+                std::cout<<adversar.Get_Nume()<<"nu a mintit! "<<std::endl;
                 adversar.CresteViata();
                 return true;
             }
@@ -266,7 +271,6 @@ int main() {
     Pachet_carti pachet;
     Table table;
     Joc joc;
-    int nr_juc = 0;
     pachet.Amesteca_pachet();
     table.setTableName();
     table.Afis_TableName();
@@ -278,15 +282,28 @@ int main() {
     player2.Afis_Mana();
 
     while (player1.Get_viata()<6 && player2.Get_viata()<6) {
-        nr_juc=0;
         while (!player1.Fara_carti() && !player2.Fara_carti()) {
-            if (!player1.Alege_carti()) break;
-            std::cout << std::endl;
-            if (joc.Minte(player1,player2, table)) {nr_juc=1;break;}
 
-            if (!player2.Alege_carti()) break;
-            std::cout << std::endl;
-            if (joc.Minte(player2,player1,table)) {nr_juc=2;break;}
+            if (!player1.Alege_carti()) {
+                std::cout << std::endl;
+                if (joc.Minte(player1, player2, table)) break;
+
+                std::cout<<player1.Get_Nume()<<" nu mai are carti! ";
+                player2.CresteViata();
+                break;
+            }
+            if (joc.Minte(player1, player2, table)) break;
+
+            if (!player2.Alege_carti()) {
+                std::cout << std::endl;
+                if (joc.Minte(player2, player1, table)) break;
+
+                std::cout<<player2.Get_Nume()<<" nu mai are carti! ";
+                player1.CresteViata();
+                break;
+            }
+            if (joc.Minte(player2, player1, table)) break;
+
         }
         if (player1.Get_viata() >= 6 || player2.Get_viata() >= 6) break;
 
@@ -297,19 +314,55 @@ int main() {
         pachet.Amesteca_pachet();
         table.setTableName();
         table.Afis_TableName();
-        if(nr_juc==1){
-            player1.reset_carti(pachet);
-            player2.reset_carti(pachet);
-        }
-        else if (nr_juc==2) {
-            player2.reset_carti(pachet);
-            player1.reset_carti(pachet);
-        }
-
+        player1.reset_carti(pachet);
+        player2.reset_carti(pachet);
         std::cout<<std::endl;
     }
     std::cout << "Gata joculetul" << std::endl;
 }
 
-
+//     sf::RenderWindow window;
+//     ///////////////////////////////////////////////////////////////////////////
+//     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
+//     window.create(sf::VideoMode({800, 700}), "My Window", sf::Style::Default);
+//     ///////////////////////////////////////////////////////////////////////////
+//     //
+//     ///////////////////////////////////////////////////////////////////////////
+//     /// NOTE: mandatory use one of vsync or FPS limit (not both)            ///
+//     /// This is needed so we do not burn the GPU                            ///
+//     window.setVerticalSyncEnabled(true);                                    ///
+//     /// window.setFramerateLimit(60);                                       ///
+//     ///////////////////////////////////////////////////////////////////////////
+//     ///
+//     while(window.isOpen()) {
+//         bool shouldExit = false;
+//         sf::Event e{};
+//         while(window.pollEvent(e)) {
+//             switch(e.type) {
+//                 case sf::Event::Closed:
+//                     window.close();
+//                 break;
+//                 case sf::Event::Resized:
+//                     std::cout << "New width: " << window.getSize().x << '\n'
+//                               << "New height: " << window.getSize().y << '\n';
+//                 break;
+//                 case sf::Event::KeyPressed:
+//                     std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
+//                 if(e.key.code == sf::Keyboard::Escape)
+//                     shouldExit = true;
+//                 break;
+//                 default:
+//                     break;
+//             }
+//         }
+//         if(shouldExit) {
+//             window.close();
+//             break;
+//         }
+//         using namespace std::chrono_literals;
+//         std::this_thread::sleep_for(300ms);
+//
+//         window.clear();
+//         window.display();
+//     }
 
