@@ -5,11 +5,13 @@ Te așezi frumos la masă și vezi cum vin trei rusnaci la tine. Ei te forțeaz�
 Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dintre ei vrei să te joci. 😏
 
 
-## ⚔️ Instrucțiuni (**nimeni nu citește instrucțiuni, dar aici te joci cu viața ta... ☠️**)
+## ⚔️Instrucțiuni (**nimeni nu citește instrucțiuni, dar aici te joci cu viața ta...☠️**)
 În funcție de **masa aleasă random** 🎲 de unul dintre ruși la începutul fiecărei runde, trebuie să minți cât de bine poți sau să încerci să ghicești dacă unul dintre ruși a mințit.
+
+
 **Fiecare jucător are**:
 - Cinci cărți din mulțimea {Q, K, A, JOKER}
-- Un **revolver** cu un **glonț** din șase:
+- Un **revolver** cu un **glonț** din șase
 
 
 
