@@ -357,8 +357,8 @@ int main() {
     if (pierzator=="Marius") std::cout<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
     else std::cout<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase in Rusia!"<<std::endl;
     Joc::Reset_revolver(player1, player2);
-    glont1=player1.Get_glont();
-    glont2=player2.Get_glont();
+    // glont1=player1.Get_glont();
+    // glont2=player2.Get_glont();
 
 
 }
