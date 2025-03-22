@@ -62,6 +62,7 @@ class Player {
     std::vector<std::string> mana;
     int viata;
     std::vector<int> carti_alese;
+    int glont;
 
 
 public:
@@ -70,6 +71,7 @@ public:
         this->mana=mana.Extrage_mana();
         this->viata=viata;
         this->carti_alese={};
+        this->glont=rand()%6+1;
     }
 
     Player &operator=(const Player &x) {
@@ -77,6 +79,7 @@ public:
         this->mana=x.mana;
         this->viata=x.viata;
         this->carti_alese=x.carti_alese;
+        this->glont=x.glont;
         return *this;
     }
 
@@ -174,18 +177,23 @@ public:
 
     void CresteViata() {
         viata++;
-        if (viata>1) std::cout<<nume<<" acum are "<<viata<<" vieti"<<std::endl;
-        else std::cout<<nume<<" acum are "<<viata<<" viata"<<std::endl;
     }
 
     [[nodiscard]] int Get_viata() const {
         return viata;
     }
 
-    const std::string& Get_Nume() const {
+    [[nodiscard]] const std::string& Get_Nume() const {
         return nume;
     }
 
+    [[nodiscard]] int Get_glont() const {
+        return glont;
+    }
+
+    void Invarte_revolver(int alt_glont) {
+        glont=alt_glont;
+    }
 };
 
 class Table{
@@ -210,21 +218,26 @@ public:
         else {this->table_name="QUEEN'S TABLE", index_table=3;}
     }
 
-    void Afis_TableName() const {
-        std::cout <<"Masa aleasa: " << table_name << std::endl;
-    }
-
     int Table_index() const {
         return index_table;
     }
 
+    friend std::ostream& operator<<(std::ostream& os,const Table& table);
+
+
 };
 
+    std::ostream& operator<<(std::ostream& os,const Table& table) {
+    os<<"Masa aleasa: "<<table.table_name<<" ";
+    return os;
+    }
 
 class Joc {
     // std::string nr_playeri;
 
+
 public:
+
 
     // void Alege_nr_playeri() {
     //     std::cin>>nr_playeri;
@@ -253,11 +266,13 @@ public:
             if (!toate_corecte) {
                 std::cout<<player.Get_Nume()<<" a mintit! ";
                 player.CresteViata();
+                std::cout<<player.Get_Nume()<<": "<<player.Get_viata()<<"/6"<<std::endl;
                 return true;
             }
             else {
-                std::cout<<adversar.Get_Nume()<<"nu a mintit! "<<std::endl;
+                std::cout<<player.Get_Nume()<<" nu a mintit! "<<std::endl;
                 adversar.CresteViata();
+                std::cout<<adversar.Get_Nume()<<": "<<adversar.Get_viata()<<"/6"<<std::endl;
                 return true;
             }
         }
@@ -265,24 +280,34 @@ public:
         return false;
     }
 
+        static void Reset_revolver(Player& player1, Player& player2) {
+        player1.Invarte_revolver(rand()%6+1);
+        player2.Invarte_revolver(rand()%6+1);
+    }
+
 };
 
 
 int main() {
+    srand(time(nullptr));
+
     Pachet_carti pachet;
     Table table;
     Joc joc;
     pachet.Amesteca_pachet();
     table.setTableName();
-    table.Afis_TableName();
+    std::string pierzator;
+    std::cout<<table<<std::endl;
 
     Player player1("Marius", pachet,0);
     player1.Afis_Mana();
+    int glont1=player1.Get_glont();
 
     Player player2("Ivan", pachet,0);
     player2.Afis_Mana();
+    int glont2=player2.Get_glont();
 
-    while (player1.Get_viata()<6 && player2.Get_viata()<6) {
+    while (player1.Get_viata()<glont1 && player2.Get_viata()<glont2) {
         while (!player1.Fara_carti() && !player2.Fara_carti()) {
 
             if (!player1.Alege_carti()) {
@@ -306,7 +331,17 @@ int main() {
             if (joc.Minte(player2, player1, table)) break;
 
         }
-        if (player1.Get_viata() >= 6 || player2.Get_viata() >= 6) break;
+        if (player1.Get_viata() >= glont1) {
+            std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
+            pierzator=player2.Get_Nume();
+            break;
+        }
+
+        if (player2.Get_viata() >= glont2) {
+            std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
+            pierzator=player1.Get_Nume();
+            break;
+        }
 
         std::cout << std::endl;
         std::cout <<"runda s-a terminat"<<std::endl;
@@ -314,12 +349,18 @@ int main() {
 
         pachet.Amesteca_pachet();
         table.setTableName();
-        table.Afis_TableName();
+        std::cout<<table<<std::endl;
         player1.reset_carti(pachet);
         player2.reset_carti(pachet);
         std::cout<<std::endl;
     }
-    std::cout << "Gata joculetul" << std::endl;
+    if (pierzator=="Marius") std::cout<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
+    else std::cout<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase in Rusia!"<<std::endl;
+    Joc::Reset_revolver(player1, player2);
+    glont1=player1.Get_glont();
+    glont2=player2.Get_glont();
+
+
 }
 
 //     sf::RenderWindow window;
