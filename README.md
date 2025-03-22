@@ -12,8 +12,11 @@ Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dint
 
 ## 🎮 How to play:
 1️⃣ Jucătorii aleg 1-3 cărți din mână.
-2️⃣ Dacă un jucător este prins mințind, el trebuie să-și tragă un glonț în cap folosind revolverul său (glonțul poate fi orb... sau adevărat)
+
+2️⃣ Dacă un jucător este prins mințind, el trebuie să-și tragă un glonț în cap folosind revolverul său (glonțul poate fi orb... sau adevărat).
+
 3️⃣ Dacă jucătorul nu minte, adversarul, de dinainte, este obligat să tragă un glonț.
+
 4️⃣ Dacă un jucător rămâne fără cărți, iar ultimele lui declarații au fost adevărate, adversarul precedent trebuie să se împuște.
 
 **⚠️ Pe scurt: pierzi o rundă, ești cu un pas mai aproape de moarte! 💀**
