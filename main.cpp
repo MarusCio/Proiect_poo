@@ -241,7 +241,7 @@ class Joc {
 
 public:
 
-        Joc() = default;
+        Joc() : dificultate(1) {}
 
         Joc& operator=(const Joc& x) {
             dificultate=x.dificultate;
@@ -256,22 +256,20 @@ public:
         std::cin>>nr_playeri;
         std::cout<<std::endl;
 
-        while (nr_playeri!=1 && nr_playeri!=2 && nr_playeri!=3) {
+        while (nr_playeri<1 || nr_playeri>3) {
             if (nr_playeri<1) {
                 std::cout<<"Daca refuzi sate joci te omoara oricum..."<<std::endl;
                 std::cout<<"Deci numaru de rusi cu care vrei sa te joci este:";
                 std::cin>>nr_playeri;
             }
-            else if (nr_playeri>3) {
+            else{
                 std::cout<<"Poti juca maxim cu toti rusii, adica 3... NU ii eneva!"<<std::endl;
                 std::cout<<"Deci numaru de rusi cu care vrei sa te joci este:";
                 std::cin>>nr_playeri;
             }
         }
 
-        if (nr_playeri==1) this->dificultate=1;
-        if (nr_playeri==2) this->dificultate=2;
-        if (nr_playeri==3) this->dificultate=3;
+        this->dificultate=nr_playeri;
 
         return dificultate;
     }
@@ -621,7 +619,7 @@ int main() {
     std::cin>>joc_nou;
 
     if (joc_nou == 'y') {
-        // main();
+        main();
     }
     else {
         std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
