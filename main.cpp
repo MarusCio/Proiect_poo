@@ -390,7 +390,6 @@ int main() {
         glont2=player2.Get_glont();
     }
 
-
     std::cout<<"Cand iti revine cheful stii ce sa te joci ";
 }
 
