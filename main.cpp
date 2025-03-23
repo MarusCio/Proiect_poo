@@ -621,7 +621,7 @@ int main() {
     std::cin>>joc_nou;
 
     if (joc_nou == 'y') {
-        main();
+        // main();
     }
     else {
         std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
