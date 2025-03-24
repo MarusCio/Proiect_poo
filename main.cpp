@@ -69,7 +69,7 @@ public:
 
     Player(){}
 
-    Player( std::string nume,Pachet_Carti& mana, const int viata)
+    Player(const std::string &nume,Pachet_Carti& mana, const int viata)
     {
     // Player(){
         this->nume=nume;
@@ -219,12 +219,12 @@ class Table{
 public:
     Table() = default;
 
-    Table(std::string& table_name, const int& index_table){
+    Table(const std::string& table_name, const int& index_table){
         this->table_name=table_name;
         this->index_table=index_table;
     }
 
-    Table(Table& x) {
+    Table(const Table& x) {
         this->index_table=x.index_table;
         this->table_name=x.table_name;
     }
