@@ -60,14 +60,14 @@ public:
 class Player {
     std::string nume;
     std::vector<std::string> mana;
-    int viata;
+    int viata{};
     std::vector<int> carti_alese;
-    int glont;
+    int glont{};
 
 
 public:
 
-    Player(){}
+    Player()= default;
 
     Player(const std::string &nume,Pachet_Carti& mana, const int viata)
     {
@@ -261,19 +261,30 @@ public:
 
 class Joc {
         int dificultate;
-
+        Player player, adversar;
+        Table table;
+        Pachet_Carti carti;
 
 public:
 
-        Joc() : dificultate(1) {}
+        Joc(const std::string& nume_player, const std::string& nume_adversar, Pachet_Carti& pachet)
+            : dificultate(1), player(nume_player, pachet, 0), adversar(nume_adversar, pachet, 0) {}
 
 
         Joc(const Joc& x) {
             this->dificultate=x.dificultate;
+            this->player=x.player;
+            this->adversar=x.adversar;
+            this->table=x.table;
+            this->carti=x.carti;
         }
 
         Joc& operator=(const Joc& x) {
             this->dificultate=x.dificultate;
+            this->player=x.player;
+            this->adversar=x.adversar;
+            this->table=x.table;
+            this->carti=x.carti;
             return *this;
         }
 
@@ -303,7 +314,7 @@ public:
         return dificultate;
     }
 
-    bool Minte(Player& player, Player& adversar, const Table& table) {
+        bool Minte(Player& player, Player& adversar, const Table& table) {
         int minciuna;
 
         std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<player.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
@@ -333,6 +344,7 @@ public:
         return false;
     }
 
+
         static void Reset_Revolver1(Player& player1, Player& player2) {
         player1.Invarte_Revolver(rand()%6+1);
         player2.Invarte_Revolver(rand()%6+1);
@@ -352,14 +364,12 @@ public:
 
 };
 
-
-
 int main() {
     srand(time(nullptr));
 
     Pachet_Carti pachet;
     Table table;
-    Joc joc{};
+    Joc joc("Marius", "Ivan", pachet);
     int dif=joc.Set_Dificultate();
 
     pachet.Amesteca_Pachet();
@@ -406,7 +416,6 @@ int main() {
                 }
 
                 if (joc.Minte(player2, player1, table)) break;
-
             }
 
             if (player1.Get_Viata() >= glont1) {
@@ -643,48 +652,48 @@ int main() {
     }
 
 
-    char joc_nou;
-    std::cout<<"Vrei sa joci din nou? Apasa 0 daca da: ";
-    std::cin>>joc_nou;
-
-    if (joc_nou == '0') {
-        // main();
-    }
-    else {
-        std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
-    }
-
+    // char joc_nou;
+    // std::cout<<"Vrei sa joci din nou? Apasa 0 daca da: ";
+    // std::cin>>joc_nou;
+    //
+    // if (joc_nou == '0') {
+    //     // main();
+    // }
+    // else {
+    //     std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
+    // }
 }
-
-//     sf::RenderWindow window;
-//     ///////////////////////////////////////////////////////////////////////////
-//     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
-//     window.create(sf::VideoMode({800, 700}), "My Window", sf::Style::Default);
-//     ///////////////////////////////////////////////////////////////////////////
-//     //
-//     ///////////////////////////////////////////////////////////////////////////
-//     /// NOTE: mandatory use one of vsync or FPS limit (not both)            ///
-//     /// This is needed so we do not burn the GPU                            ///
-//     window.setVerticalSyncEnabled(true);                                    ///
-//     /// window.setFramerateLimit(60);                                       ///
-//     ///////////////////////////////////////////////////////////////////////////
-//     ///
-//     while(window.isOpen()) {
-//         bool shouldExit = false;
-//         sf::Event e{};
-//         while(window.pollEvent(e)) {
-//             switch(e.type) {
-//                 case sf::Event::Closed:
-//                     window.close();
-//                 break;
-//                 case sf::Event::Resized:
-//                     std::cout << "New width: " << window.getSize().x << '\n'
-//                               << "New height: " << window.getSize().y << '\n';
-//                 break;
-//                 case sf::Event::KeyPressed:
-//                     std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
-//                 if(e.key.code == sf::Keyboard::Escape)
-//                     shouldExit = true;
+// }
+//
+// //     sf::RenderWindow window;
+// //     ///////////////////////////////////////////////////////////////////////////
+// //     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
+// //     window.create(sf::VideoMode({800, 700}), "My Window", sf::Style::Default);
+// //     ///////////////////////////////////////////////////////////////////////////
+// //     //
+// //     ///////////////////////////////////////////////////////////////////////////
+// //     /// NOTE: mandatory use one of vsync or FPS limit (not both)            ///
+// //     /// This is needed so we do not burn the GPU                            ///
+// //     window.setVerticalSyncEnabled(true);                                    ///
+// //     /// window.setFramerateLimit(60);                                       ///
+// //     ///////////////////////////////////////////////////////////////////////////
+// //     ///
+// //     while(window.isOpen()) {
+// //         bool shouldExit = false;
+// //         sf::Event e{};
+// //         while(window.pollEvent(e)) {
+// //             switch(e.type) {
+// //                 case sf::Event::Closed:
+// //                     window.close();
+// //                 break;
+// //                 case sf::Event::Resized:
+// //                     std::cout << "New width: " << window.getSize().x << '\n'
+// //                               << "New height: " << window.getSize().y << '\n';
+// //                 break;
+// //                 case sf::Event::KeyPressed:
+// //                     std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
+// //                 if(e.key.code == sf::Keyboard::Escape)
+// //                     shouldExit = true;
 //                 break;
 //                 default:
 //                     break;
