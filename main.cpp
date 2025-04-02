@@ -662,10 +662,10 @@ int main() {
     joc.Incepe_Joc();
 
     char joc_nou;
-    std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 1 daca da, sau 0 daca nu: ";
+    std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 0 daca da:";
     std::cin>>joc_nou;
 
-    while (joc_nou == '1') {
+    while (joc_nou == '0') {
         std::cout<<std::endl;
 
         Pachet_Carti pachet2;
@@ -673,7 +673,7 @@ int main() {
         pachet2.Amesteca_Pachet();
         joc2.Incepe_Joc();
 
-        std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 1 daca da, sau 0 daca nu: ";
+        std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 0 daca da";
         std::cin>>joc_nou;
     }
 
