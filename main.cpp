@@ -345,16 +345,16 @@ class Joc {
             player4.Invarte_Revolver(rand()%6+1);
         }
 
-        bool Minte(Player& player, Player& adversar, const Table& table) {
+        bool Minte(Player& player, Player& adversar_, const Table& masa) {
             int minciuna;
 
-            std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<player.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
+            std::cout<<adversar_.Get_Nume()<<", daca crezi ca "<<player.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
             std::cin>>minciuna;
 
             if (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
             if (minciuna==1) {
                 std::vector<int> carti_jucator = player.Get_CartiAlese();
-                int masa_aleasa = table.Table_Index();
+                int masa_aleasa = masa.Table_Index();
                 bool toate_corecte = std::all_of(carti_jucator.begin(), carti_jucator.end(),
                                                  [masa_aleasa](int carte) { return carte == masa_aleasa || carte==4; });
 
@@ -366,8 +366,8 @@ class Joc {
                 }
                 else {
                     std::cout<<player.Get_Nume()<<" nu a mintit! "<<std::endl;
-                    adversar.Creste_Viata();
-                    std::cout<<adversar.Get_Nume()<<": "<<adversar.Get_Viata()<<"/6"<<std::endl;
+                    adversar_.Creste_Viata();
+                    std::cout<<adversar_.Get_Nume()<<": "<<adversar_.Get_Viata()<<"/6"<<std::endl;
                     return true;
                 }
             }
@@ -661,11 +661,11 @@ int main() {
     pachet.Amesteca_Pachet();
     joc.Incepe_Joc();
 
-    int joc_nou;
+    char joc_nou;
     std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 1 daca da, sau 0 daca nu: ";
     std::cin>>joc_nou;
 
-    while (joc_nou == 1) {
+    while (joc_nou == '1') {
         std::cout<<std::endl;
 
         Pachet_Carti pachet2;
@@ -677,7 +677,7 @@ int main() {
         std::cin>>joc_nou;
     }
 
-        std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
+        std::cout<<std::endl<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
 
 }
 
