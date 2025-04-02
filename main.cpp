@@ -10,17 +10,18 @@
 
 class Pachet_Carti {
     std::vector<std::string>carti;
-
+    inline static const std::vector<std::string> pachet={
+        "A", "A", "A", "A", "A", "A",
+        "K", "K", "K", "K", "K", "K",
+        "Q", "Q", "Q", "Q", "Q", "Q",
+        "JOKER", "JOKER"
+    };
 
 public:
     Pachet_Carti() :
-        carti{"A", "A", "A", "A", "A", "A",
-            "K", "K", "K", "K", "K", "K",
-            "Q", "Q", "Q", "Q", "Q", "Q",
-            "JOKER","JOKER"} {}
+        carti{pachet} {}
 
-
-    Pachet_Carti(const Pachet_Carti &x): carti{x.carti} {};
+    Pachet_Carti(const Pachet_Carti &x): carti{x.carti} {}
 
     ~Pachet_Carti() = default;
 
@@ -30,10 +31,7 @@ public:
     }
 
     void Amesteca_Pachet() {
-        carti={"A", "A", "A", "A", "A", "A",
-            "K", "K", "K", "K", "K", "K",
-            "Q", "Q", "Q", "Q", "Q", "Q",
-            "JOKER","JOKER"};
+        carti= pachet;
         std::random_device rd;
         std::mt19937 g(rd());
         std::shuffle(carti.begin(), carti.end(), g);
@@ -83,13 +81,8 @@ public:
         this->glont=rand()%6+1;
     }
 
-    Player(const Player& x) {
-        this->nume=x.nume;
-        this->mana=x.mana;
-        this->viata=x.viata;
-        this->carti_alese=x.carti_alese;
-        this->glont=x.glont;
-    }
+    Player(const Player& x): nume{x.nume},mana{x.mana},viata{x.viata},carti_alese{x.carti_alese},glont{x.glont} {}
+
 
     Player &operator=(const Player &x) {
         this->nume=x.nume;
@@ -101,14 +94,6 @@ public:
     }
 
     ~Player() = default;
-
-    // void Afis_Mana() const {
-    //     std::cout<<nume<<": ";
-    //     for (size_t i = 0; i < mana.size(); i++) {
-    //         std::cout<<i+1<<")"<<mana[i]<<" ";
-    //     }
-    //     std::cout<<std::endl;
-    // }
 
     void Index_Pt_Carti(int nr, std::vector<int>& indecsi) const {
         int index;
@@ -239,10 +224,7 @@ public:
         this->index_table=index_table;
     }
 
-    Table(const Table& x) {
-        this->index_table=x.index_table;
-        this->table_name=x.table_name;
-    }
+    Table(const Table& x) : table_name{x.table_name}, index_table{x.index_table}{}
 
     Table& operator=(const Table& x){
         table_name=x.table_name;
@@ -286,13 +268,7 @@ class Joc {
             : dificultate(1), jucator(nume_player, pachet, 0), adversar(nume_adversar, pachet, 0) {}
 
 
-        Joc(const Joc& x) {
-            this->dificultate=x.dificultate;
-            this->jucator=x.jucator;
-            this->adversar=x.adversar;
-            this->table=x.table;
-            this->carti=x.carti;
-        }
+        Joc(const Joc& x) : dificultate{x.dificultate}, jucator{x.jucator}, adversar{x.adversar}, table {x.table}, carti {x.carti} {}
 
         Joc& operator=(const Joc& x) {
             this->dificultate=x.dificultate;
@@ -381,9 +357,16 @@ class Joc {
             table.Set_TableName();
             std::cout<<table<<std::endl;
 
-            if (dif == 1) {
+            if (dif == 1)  Duo();
 
-                Player player1("Marius", carti, 0);
+            else if (dif == 2) Trio();
+
+            else if (dif == 3) Squad();
+
+        }
+
+        void Duo(){
+            Player player1("Marius", carti, 0);
                 std::cout<<player1;
                 int glont1 = player1.Get_Glont();
 
@@ -445,10 +428,10 @@ class Joc {
 
                 std::cout<<*this;
 
-            }
+        }
 
-            else if (dif == 2) {
-                Player player1("Marius", carti, 0);
+        void Trio(){
+            Player player1("Marius", carti, 0);
                 std::cout<<player1;
                 int glont1 = player1.Get_Glont();
 
@@ -531,10 +514,9 @@ class Joc {
                 }
 
                 std::cout<<*this;
+}
 
-            }
-
-            else if (dif == 3) {
+        void Squad(){
                 Player player1("Marius", carti, 0);
                 std::cout<<player1;
                 int glont1= player1.Get_Glont();
@@ -641,7 +623,6 @@ class Joc {
                 std::cout<<*this;
             }
 
-        }
         friend std::ostream& operator<<(std::ostream& os, const Joc& joc);
     };
 
