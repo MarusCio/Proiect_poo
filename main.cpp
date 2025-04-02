@@ -276,19 +276,19 @@ public:
 
 class Joc {
         int dificultate;
-        Player player, adversar;
+        Player jucator, adversar;
         Table table;
         Pachet_Carti carti;
 
     public:
 
         Joc(const std::string& nume_player, const std::string& nume_adversar, Pachet_Carti& pachet)
-            : dificultate(1), player(nume_player, pachet, 0), adversar(nume_adversar, pachet, 0) {}
+            : dificultate(1), jucator(nume_player, pachet, 0), adversar(nume_adversar, pachet, 0) {}
 
 
         Joc(const Joc& x) {
             this->dificultate=x.dificultate;
-            this->player=x.player;
+            this->jucator=x.jucator;
             this->adversar=x.adversar;
             this->table=x.table;
             this->carti=x.carti;
@@ -296,7 +296,7 @@ class Joc {
 
         Joc& operator=(const Joc& x) {
             this->dificultate=x.dificultate;
-            this->player=x.player;
+            this->jucator=x.jucator;
             this->adversar=x.adversar;
             this->table=x.table;
             this->carti=x.carti;
@@ -377,7 +377,6 @@ class Joc {
 
         void Incepe_Joc() {
             int dif=Set_Dificultate();
-            std::string pierzator;
 
             table.Set_TableName();
             std::cout<<table<<std::endl;
@@ -424,13 +423,11 @@ class Joc {
 
                     if (player1.Get_Viata() >= glont1) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player1.Get_Nume();
                         break;
                     }
 
                     if (player2.Get_Viata() >= glont2) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player2.Get_Nume();
                         break;
                     }
 
@@ -507,19 +504,16 @@ class Joc {
 
                     if (player1.Get_Viata() >= glont1) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player1.Get_Nume();
                         break;
                     }
 
                     if (player2.Get_Viata() >= glont2) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player2.Get_Nume();
                         break;
                     }
 
                     if (player3.Get_Viata() >= glont3) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player3.Get_Nume();
                         break;
                     }
 
@@ -612,25 +606,21 @@ class Joc {
 
                     if (player1.Get_Viata() >= glont1) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player1.Get_Nume();
                         break;
                     }
 
                     if (player2.Get_Viata() >= glont2) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player2.Get_Nume();
                         break;
                     }
 
                     if (player3.Get_Viata() >= glont3) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player3.Get_Nume();
                         break;
                     }
 
                     if (player4.Get_Viata() >= glont4) {
                         std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        pierzator=player4.Get_Nume();
                         break;
                     }
 
@@ -656,7 +646,7 @@ class Joc {
     };
 
 std::ostream& operator<<(std::ostream& os, const Joc& joc) {
-        if (joc.player.Get_Nume()!="Marius") os<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
+        if (joc.jucator.Get_Nume()!="Marius") os<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
         else os<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
     return os;
 }
