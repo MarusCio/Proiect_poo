@@ -202,7 +202,6 @@ public:
         return viata < glont;
     }
 
-
     void Invarte_Revolver(int alt_glont) {
         glont=alt_glont;
     }
@@ -314,12 +313,12 @@ class Joc {
             return dificultate;
         }
 
-        static void Reset_Revolver(std::vector<Player>& players) {
-            for (auto& player : players)
-                player.Invarte_Revolver(rand() % 6 + 1);
+        static void Reset_Revolver(std::vector<Player*>& players) {
+            for (const auto& player : players)
+                player->Invarte_Revolver(rand() % 6 + 1);
         }
 
-        bool Minte(Player& jucator_crt, Player& adversar, const Table& masa) {
+        static bool Minte(Player& jucator_crt, Player& adversar, const Table& masa) {
             int minciuna;
 
             std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
@@ -368,12 +367,14 @@ class Joc {
 
         void Incepe_Joc() {
             const int dif = Set_Dificultate();
-            bool final_joc = true;
+            constexpr bool final_joc = true;
 
             std::vector<Player*> jucatori_initiali;
             for (int i = 0; i <= dif; ++i) {
                 jucatori_initiali.push_back(&players[i]);
             }
+            Reset_Revolver(jucatori_initiali);
+
 
             // std::cout << *this << std::endl;
 
@@ -397,10 +398,9 @@ class Joc {
                 //     std::cout << *player;
                 // }
 
-                bool runda = true;
                 size_t i = 0;
 
-                while (runda && !jucatori_la_masa.empty()) {
+                while (!jucatori_la_masa.empty()) {
                     if (i >= jucatori_la_masa.size()) i = 0;
 
                     Player& jucator_curent = *jucatori_la_masa[i];
@@ -410,7 +410,6 @@ class Joc {
                         std::cout << std::endl;
 
                         if (!jucator_urmator.Get_Carti().empty() && Minte(jucator_curent, jucator_urmator, table)) {
-                            runda = false;
                             break;
                         }
 
@@ -418,7 +417,6 @@ class Joc {
                             std::cout << jucator_curent.Get_Nume() << " Nu mai are carti! ";
                             jucator_urmator.Creste_Viata();
                             std::cout << jucator_urmator.Get_Nume() << ": " << jucator_urmator.Get_Viata() << "/6" << std::endl << std::endl;
-                            runda = false;
                             break;
                         }
 
@@ -433,7 +431,6 @@ class Joc {
                     }
 
                     if (!jucator_urmator.Get_Carti().empty() && Minte(jucator_curent, jucator_urmator, table)) {
-                        runda = false;
                         break;
                     }
 
@@ -458,7 +455,6 @@ class Joc {
                     }
 
                     if (jucatori_la_masa.size() <= 1) {
-                        runda = false;
                         break;
                     }
 
@@ -466,7 +462,7 @@ class Joc {
                     if (i >= jucatori_la_masa.size()) i = 0;
                 }
 
-                for (const auto& p : jucatori_la_masa) {
+                for (const auto* p : jucatori_la_masa) {
                     if (!p->Alive()) {
                         std::cout <<"🔥🔥🔥 BOOOOOO0000000000000000000000000000000000000000OM 🔥🔥🔥"<<std::endl<<p->Get_Nume()<< " a murit!"<< std::endl;
                         std::cout<<std::endl;
@@ -522,8 +518,8 @@ int main() {
         std::cout<<std::endl;
 
         Pachet_Carti pachet2;
-        Joc joc2({"Marius","Ivan","Aleksei","Dimitri"},pachet2);
         pachet2.Amesteca_Pachet();
+        Joc joc2({"Marius","Ivan","Aleksei","Dimitri"},pachet2);
         joc2.Incepe_Joc();
 
         std::cout<<std::endl<<"Vrei sa joci din nou? Apasa 0 daca da";
