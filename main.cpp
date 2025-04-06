@@ -313,7 +313,7 @@ class Joc {
             return dificultate;
         }
 
-        static void Reset_Revolver(std::vector<Player*>& players) {
+        static void Reset_Revolver(const std::vector<Player*>& players) {
             for (const auto& player : players)
                 player->Invarte_Revolver(rand() % 6 + 1);
         }
