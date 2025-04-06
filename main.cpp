@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <random>
 #include <algorithm>
+
+// #include "cmake-build-debug/_deps/sfml-src/src/SFML/Window/CursorImpl.hpp"
 // #include <SFML/Graphics.hpp>
 // #include <chrono>
 // #include <thread>
@@ -171,13 +173,16 @@ public:
         return carti_alese;
     }
 
+    [[nodiscard]] const std::vector<std::string>& Get_Carti() const {
+        return mana;
+    }
+
     [[nodiscard]] bool Fara_Carti() const {
         return mana.empty();
     }
 
     void Reset_Carti(Pachet_Carti& pachet) {
         mana = pachet.Extrage_Mana();
-        std::cout<<*this;
     }
 
     void Creste_Viata() {
@@ -192,9 +197,11 @@ public:
         return nume;
     }
 
-    [[nodiscard]] int Get_Glont() const {
-        return glont;
+
+    [[nodiscard]] bool Alive() const {
+        return viata < glont;
     }
+
 
     void Invarte_Revolver(int alt_glont) {
         glont=alt_glont;
@@ -258,22 +265,24 @@ public:
 
 class Joc {
         int dificultate;
-        Player jucator, adversar;
+        std::vector<Player> players;
         Table table;
         Pachet_Carti carti;
 
     public:
 
-        Joc(const std::string& nume_player, const std::string& nume_adversar, Pachet_Carti& pachet)
-            : dificultate(1), jucator(nume_player, pachet, 0), adversar(nume_adversar, pachet, 0) {}
+        Joc(const std::vector<std::string>& nume_jucatori, Pachet_Carti& pachet): dificultate(nume_jucatori.size()), carti(pachet) {
+            for (const auto& nume : nume_jucatori) {
+                players.emplace_back(nume, pachet, 0);
+            }
+        }
 
 
-        Joc(const Joc& x) : dificultate{x.dificultate}, jucator{x.jucator}, adversar{x.adversar}, table {x.table}, carti {x.carti} {}
+        Joc(const Joc& x) : dificultate{x.dificultate}, players {x.players}, table {x.table}, carti {x.carti}{}
 
         Joc& operator=(const Joc& x) {
             this->dificultate=x.dificultate;
-            this->jucator=x.jucator;
-            this->adversar=x.adversar;
+            this->players=x.players;
             this->table=x.table;
             this->carti=x.carti;
             return *this;
@@ -305,341 +314,204 @@ class Joc {
             return dificultate;
         }
 
-        static void Reset_Revolver1(Player& player1, Player& player2) {
-            player1.Invarte_Revolver(rand()%6+1);
-            player2.Invarte_Revolver(rand()%6+1);
-        }
-        static void Reset_Revolver2(Player& player1, Player& player2, Player& player3) {
-            player1.Invarte_Revolver(rand()%6+1);
-            player2.Invarte_Revolver(rand()%6+1);
-            player3.Invarte_Revolver(rand()%6+1);
-        }
-        static void Reset_Revolver3(Player& player1, Player& player2, Player& player3, Player& player4) {
-            player1.Invarte_Revolver(rand()%6+1);
-            player2.Invarte_Revolver(rand()%6+1);
-            player3.Invarte_Revolver(rand()%6+1);
-            player4.Invarte_Revolver(rand()%6+1);
+        static void Reset_Revolver(std::vector<Player>& players) {
+            for (auto& player : players)
+                player.Invarte_Revolver(rand() % 6 + 1);
         }
 
-        bool Minte(Player& player, Player& adversar_, const Table& masa) {
+        bool Minte(Player& jucator_crt, Player& adversar, const Table& masa) {
             int minciuna;
 
-            std::cout<<adversar_.Get_Nume()<<", daca crezi ca "<<player.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
+            std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
             std::cin>>minciuna;
 
-            if (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
+            while (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
             if (minciuna==1) {
-                std::vector<int> carti_jucator = player.Get_CartiAlese();
+                std::vector<int> carti_jucator = jucator_crt.Get_CartiAlese();
                 int masa_aleasa = masa.Table_Index();
                 bool toate_corecte = std::all_of(carti_jucator.begin(), carti_jucator.end(),
                                                  [masa_aleasa](int carte) { return carte == masa_aleasa || carte==4; });
 
                 if (!toate_corecte) {
-                    std::cout<<player.Get_Nume()<<" a mintit! "<<std::endl;
-                    player.Creste_Viata();
-                    std::cout<<player.Get_Nume()<<": "<<player.Get_Viata()<<"/6"<<std::endl;
+                    std::cout<<jucator_crt.Get_Nume()<<" a mintit! "<<std::endl;
+                    jucator_crt.Creste_Viata();
+                    std::cout<<jucator_crt.Get_Nume()<<": "<<jucator_crt.Get_Viata()<<"/6"<<std::endl;
+                    std::cout<<std::endl;
+
                     return true;
                 }
                 else {
-                    std::cout<<player.Get_Nume()<<" nu a mintit! "<<std::endl;
-                    adversar_.Creste_Viata();
-                    std::cout<<adversar_.Get_Nume()<<": "<<adversar_.Get_Viata()<<"/6"<<std::endl;
+                    std::cout<<jucator_crt.Get_Nume()<<" nu a mintit! "<<std::endl;
+                    adversar.Creste_Viata();
+                    std::cout<<adversar.Get_Nume()<<": "<<adversar.Get_Viata()<<"/6"<<std::endl;
+                    std::cout<<std::endl;
                     return true;
+
                 }
             }
             std::cout<<std::endl;
             return false;
         }
 
-        void Incepe_Joc() {
-            int dif=Set_Dificultate();
+        static std::vector<Player*> Jucatori_Activi(std::vector<Player*>& jucatori_initiali, Pachet_Carti& carti) {
+            std::vector<Player*> activi;
 
-            table.Set_TableName();
-            std::cout<<table<<std::endl;
-
-            if (dif == 1)  Duo();
-
-            else if (dif == 2) Trio();
-
-            else if (dif == 3) Squad();
-
-        }
-
-        void Duo(){
-            Player player1("Marius", carti, 0);
-                std::cout<<player1;
-                int glont1 = player1.Get_Glont();
-
-                Player player2("Ivan", carti, 0);
-                std::cout<<player2;
-                int glont2 = player2.Get_Glont();
-
-                Reset_Revolver1(player1, player2);
-
-                while (player1.Get_Viata()<glont1 && player2.Get_Viata()<glont2) {
-                    while (!player1.Fara_Carti() && !player2.Fara_Carti()) {
-
-                        if (!player1.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player1, player2, table)) break;
-
-                            std::cout<<player1.Get_Nume()<<" nu mai are carti! ";
-                            player2.Creste_Viata();
-                            std::cout<<player2.Get_Nume()<<": "<<player2.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-
-                        if (Minte(player1, player2, table)) break;
-
-                        if (!player2.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player2, player1, table)) break;
-
-                            std::cout<<player2.Get_Nume()<<" nu mai are carti! ";
-                            player1.Creste_Viata();
-                            std::cout<<player1.Get_Nume()<<": "<<player1.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-
-                        if (Minte(player2, player1, table)) break;
-                    }
-
-                    if (player1.Get_Viata() >= glont1) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player2.Get_Viata() >= glont2) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    std::cout << std::endl;
-                    std::cout <<"runda s-a terminat"<<std::endl;
-                    std::cout <<"se genereaza o masa noua"<< std::endl;
-
-                    carti.Amesteca_Pachet();
-                    table.Set_TableName();
-                    std::cout<<std::endl<<table<<std::endl;
-                    player1.Reset_Carti(carti);
-                    player2.Reset_Carti(carti);
-                    std::cout<<std::endl;
+            for (auto& jucator : jucatori_initiali) {
+                if (jucator->Alive()) {
+                    jucator->Reset_Carti(carti);
+                    activi.push_back(jucator);
                 }
-
-                std::cout<<*this;
-
-        }
-
-        void Trio(){
-            Player player1("Marius", carti, 0);
-                std::cout<<player1;
-                int glont1 = player1.Get_Glont();
-
-                Player player2("Ivan", carti, 0);
-                std::cout<<player2;
-                int glont2 = player2.Get_Glont();
-
-                Player player3("Aleksei", carti, 0);
-                std::cout<<player3;
-                int glont3 = player3.Get_Glont();
-
-                Reset_Revolver2(player1, player2, player3);
-
-                while (player1.Get_Viata()<glont1 && player2.Get_Viata()<glont2 && player3.Get_Viata()<glont3) {
-                    while (!player1.Fara_Carti() && !player2.Fara_Carti() && !player3.Fara_Carti()) {
-
-                        if (!player1.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player1, player2, table)) break;
-
-                            std::cout<<player1.Get_Nume()<<" nu mai are carti! ";
-                            player2.Creste_Viata();
-                            std::cout<<player2.Get_Nume()<<": "<<player2.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player1, player2, table)) break;
-
-
-                        if (!player2.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player2, player3, table)) break;
-
-                            std::cout<<player2.Get_Nume()<<" nu mai are carti! ";
-                            player3.Creste_Viata();
-                            std::cout<<player3.Get_Nume()<<": "<<player3.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player2, player3, table)) break;
-
-
-                        if (!player3.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player3, player1, table)) break;
-
-                            std::cout<<player3.Get_Nume()<<" nu mai are carti! ";
-                            player1.Creste_Viata();
-                            std::cout<<player1.Get_Nume()<<": "<<player1.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player3, player1, table)) break;
-
-                    }
-
-                    if (player1.Get_Viata() >= glont1) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player2.Get_Viata() >= glont2) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player3.Get_Viata() >= glont3) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    std::cout << std::endl;
-                    std::cout <<"runda s-a terminat"<<std::endl;
-                    std::cout <<"se genereaza o masa noua"<< std::endl;
-
-                    carti.Amesteca_Pachet();
-                    table.Set_TableName();
-                    std::cout<<std::endl<<table<<std::endl;
-                    player1.Reset_Carti(carti);
-                    player2.Reset_Carti(carti);
-                    player3.Reset_Carti(carti);
-                    std::cout<<std::endl;
-                }
-
-                std::cout<<*this;
-}
-
-        void Squad(){
-                Player player1("Marius", carti, 0);
-                std::cout<<player1;
-                int glont1= player1.Get_Glont();
-
-                Player player2("Ivan", carti, 0);
-                std::cout<<player2;
-                int glont2= player2.Get_Glont();
-
-                Player player3("Aleksei", carti, 0);
-                std::cout<<player3;
-                int glont3 = player3.Get_Glont();
-
-                Player player4("Dimitri", carti, 0);
-                std::cout<<player4;
-                int glont4 = player4.Get_Glont();
-
-                Reset_Revolver3(player1, player2, player3, player4);
-
-                while (player1.Get_Viata()<glont1 && player2.Get_Viata()<glont2 && player3.Get_Viata()<glont3 && player4.Get_Viata()<glont4) {
-                    while (!player1.Fara_Carti() && !player2.Fara_Carti() && !player3.Fara_Carti() && !player4.Fara_Carti()) {
-
-                        if (!player1.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player1, player2, table)) break;
-
-                            std::cout<<player1.Get_Nume()<<" nu mai are carti! ";
-                            player2.Creste_Viata();
-                            std::cout<<player2.Get_Nume()<<": "<<player2.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player1, player2, table)) break;
-
-
-                        if (!player2.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player2, player3, table)) break;
-
-                            std::cout<<player2.Get_Nume()<<" nu mai are carti! ";
-                            player3.Creste_Viata();
-                            std::cout<<player3.Get_Nume()<<": "<<player3.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player2, player3, table)) break;
-
-
-                        if (!player3.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player3, player4, table)) break;
-
-                            std::cout<<player3.Get_Nume()<<" nu mai are carti! ";
-                            player4.Creste_Viata();
-                            std::cout<<player4.Get_Nume()<<": "<<player4.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player3, player4, table)) break;
-
-
-                        if (!player4.Alege_Carti()) {
-                            std::cout << std::endl;
-                            if (Minte(player4, player1, table)) break;
-
-                            std::cout<<player4.Get_Nume()<<" nu mai are carti! ";
-                            player1.Creste_Viata();
-                            std::cout<<player1.Get_Nume()<<": "<<player1.Get_Viata()<<"/6"<<std::endl;
-                            break;
-                        }
-                        if (Minte(player4, player1, table)) break;
-                    }
-
-                    if (player1.Get_Viata() >= glont1) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player2.Get_Viata() >= glont2) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player3.Get_Viata() >= glont3) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    if (player4.Get_Viata() >= glont4) {
-                        std::cout<<std::endl<<"🔥🔥🔥 BOOOOOOOOOOOOOOOOOOOOOM 🔥🔥🔥 "<<std::endl;
-                        break;
-                    }
-
-                    std::cout << std::endl;
-                    std::cout <<"runda s-a terminat"<<std::endl;
-                    std::cout <<"se genereaza o masa noua"<< std::endl;
-
-                    carti.Amesteca_Pachet();
-                    table.Set_TableName();
-                    std::cout<<std::endl<<table<<std::endl;
-                    player1.Reset_Carti(carti);
-                    player2.Reset_Carti(carti);
-                    player3.Reset_Carti(carti);
-                    player4.Reset_Carti(carti);
-                    std::cout<<std::endl;
-                }
-
-                std::cout<<*this;
             }
 
+            return activi;
+        }
+
+        void Incepe_Joc() {
+            const int dif = Set_Dificultate();
+            bool final_joc = true;
+
+            std::vector<Player*> jucatori_initiali;
+            for (int i = 0; i <= dif; ++i) {
+                jucatori_initiali.push_back(&players[i]);
+            }
+
+            // std::cout << *this << std::endl;
+
+
+            while (final_joc) {
+                std::vector<Player*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali, carti);
+
+                if (jucatori_la_masa.size() == 1) {
+                    std::cout<<std::endl<<"==== CASTIGATORUL ESTE: "<<jucatori_la_masa[0]->Get_Nume()<<" ===="<<std::endl;
+                    if (jucatori_la_masa[0]->Get_Nume()=="Marius") std::cout<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
+                    else std::cout<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
+                    break;
+                }
+
+                carti.Amesteca_Pachet();
+                table.Set_TableName();
+                // std::cout << table << std::endl;
+
+                std::cout<<*this << std::endl;
+                // for (const auto& player : jucatori_la_masa) {
+                //     std::cout << *player;
+                // }
+
+                bool runda = true;
+                size_t i = 0;
+
+                while (runda && !jucatori_la_masa.empty()) {
+                    if (i >= jucatori_la_masa.size()) i = 0;
+
+                    Player& jucator_curent = *jucatori_la_masa[i];
+                    Player& jucator_urmator = *jucatori_la_masa[(i + 1) % jucatori_la_masa.size()];
+
+                    if (!jucator_curent.Alege_Carti()) {
+                        std::cout << std::endl;
+
+                        if (!jucator_urmator.Get_Carti().empty() && Minte(jucator_curent, jucator_urmator, table)) {
+                            runda = false;
+                            break;
+                        }
+
+                        if (jucatori_la_masa.size() == 2) {
+                            std::cout << jucator_curent.Get_Nume() << " Nu mai are carti! ";
+                            jucator_urmator.Creste_Viata();
+                            std::cout << jucator_urmator.Get_Nume() << ": " << jucator_urmator.Get_Viata() << "/6" << std::endl << std::endl;
+                            runda = false;
+                            break;
+                        }
+
+                        if (jucator_curent.Fara_Carti()) {
+                            std::cout << jucator_curent.Get_Nume() << "A ramas fara carti si a scapat momentan..."<< std::endl;
+                            jucatori_la_masa.erase(jucatori_la_masa.begin() + i);
+                            continue;
+                        }
+
+                        ++i;
+                        continue;
+                    }
+
+                    if (!jucator_urmator.Get_Carti().empty() && Minte(jucator_curent, jucator_urmator, table)) {
+                        runda = false;
+                        break;
+                    }
+
+                    std::vector<Player*> de_eliminat;
+
+                    for (const auto& p : jucatori_la_masa) {
+                        if (!p->Alive()) {
+                            // std::cout << "\n🔥🔥🔥 BOOOOOOOM 🔥🔥🔥\n" << p->Get_Nume() << " a murit!" << std::endl;
+                            de_eliminat.push_back(p);
+                        }
+                        else if (p->Fara_Carti()) {
+                            // std::cout << p->Get_Nume() << "A ramas fara carti si a scapat momentan..." << std::endl;
+                            de_eliminat.push_back(p);
+                        }
+                    }
+
+                    for (auto& p : de_eliminat) {
+                        auto it = std::find(jucatori_la_masa.begin(), jucatori_la_masa.end(), p);
+                        if (it != jucatori_la_masa.end()) {
+                            jucatori_la_masa.erase(it);
+                        }
+                    }
+
+                    if (jucatori_la_masa.size() <= 1) {
+                        runda = false;
+                        break;
+                    }
+
+                    ++i;
+                    if (i >= jucatori_la_masa.size()) i = 0;
+                }
+
+                for (const auto& p : jucatori_la_masa) {
+                    if (!p->Alive()) {
+                        std::cout <<"🔥🔥🔥 BOOOOOO0000000000000000000000000000000000000000OM 🔥🔥🔥"<<std::endl<<p->Get_Nume()<< " a murit!"<< std::endl;
+                        std::cout<<std::endl;
+                    }
+                }
+
+                std::cout<<"------------------"<<std::endl;
+                std::cout<<"Runda s-a terminat"<<std::endl;
+                std::cout<<"------------------"<<std::endl;
+                // std::cout <<"Se genereaza o masa noua"<< std::endl;
+
+            }
+        }
         friend std::ostream& operator<<(std::ostream& os, const Joc& joc);
+
     };
 
+
+
 std::ostream& operator<<(std::ostream& os, const Joc& joc) {
-        if (joc.jucator.Get_Nume()!="Marius") os<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
-        else os<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
+    os<<std::endl<<"---------------------"<<std::endl;
+    os << joc.table << std::endl;
+
+    for (int i = 0; i <= joc.dificultate; ++i) {
+        const Player& player = joc.players[i];
+        if (player.Alive() && !player.Fara_Carti()) {
+            os << player.Get_Nume() << " | Glont: " << player.Get_Viata() << "/6 | Mana: ";
+            for (const auto& carte : player.Get_Carti()) {
+                os << carte << " ";
+            }
+            os << std::endl;
+        }
+    }
+    os << "---------------------" << std::endl;
     return os;
 }
-
 
 int main() {
     srand(time(nullptr));
 
     Pachet_Carti pachet;
-    Joc joc("Marius","Ivan",pachet);
-
     pachet.Amesteca_Pachet();
+
+    Joc joc({"Marius","Ivan","Aleksei","Dimitri"},pachet);
+
     joc.Incepe_Joc();
 
     char joc_nou;
@@ -650,7 +522,7 @@ int main() {
         std::cout<<std::endl;
 
         Pachet_Carti pachet2;
-        Joc joc2("Marius", "Ivan", pachet2);
+        Joc joc2({"Marius","Ivan","Aleksei","Dimitri"},pachet2);
         pachet2.Amesteca_Pachet();
         joc2.Incepe_Joc();
 
@@ -658,11 +530,11 @@ int main() {
         std::cin>>joc_nou;
     }
 
-        std::cout<<std::endl<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
-
+    std::cout<<std::endl<<"-----------------------------------------"<<std::endl;
+    std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
+    std::cout<<"-----------------------------------------"<<std::endl;
 }
 
-//
 // //     sf::RenderWindow window;
 // //     ///////////////////////////////////////////////////////////////////////////
 // //     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
@@ -707,4 +579,3 @@ int main() {
 //         window.clear();
 //         window.display();
 //     }
-

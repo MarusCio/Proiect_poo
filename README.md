@@ -29,7 +29,7 @@ Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dint
 
 
 #### De implementat:
-- jocul continua cand un player nu mai are carti in mana
+- ~~jocul continua cand un player nu mai are carti in mana~~
 - adaugare mod de joc
 - rezolvare buguri
 
