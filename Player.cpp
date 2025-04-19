@@ -6,21 +6,21 @@
 
 Player::Player() = default;
 
-Player::Player(const std::string &nume, Pachet_Carti &mana, const int viata) {
+Player::Player(const std::string &nume, Pachet_Carti &mana, const int sansa) {
     // Player(){
     this->nume=nume;
     this->mana=mana.Extrage_Mana();
-    this->viata=viata;
+    this->sansa=sansa;
     this->carti_alese={};
     this->glont=rand()%6+1;
 }
 
-Player::Player(const Player &x): nume{x.nume},mana{x.mana},viata{x.viata},carti_alese{x.carti_alese},glont{x.glont} {}
+Player::Player(const Player &x): nume{x.nume},mana{x.mana},sansa{x.sansa},carti_alese{x.carti_alese},glont{x.glont} {}
 
 Player & Player::operator=(const Player &x) {
     this->nume=x.nume;
     this->mana=x.mana;
-    this->viata=x.viata;
+    this->sansa=x.sansa;
     this->carti_alese=x.carti_alese;
     this->glont=x.glont;
     return *this;
@@ -116,12 +116,12 @@ void Player::Reset_Carti(Pachet_Carti &pachet) {
     mana = pachet.Extrage_Mana();
 }
 
-void Player::Creste_Viata() {
-    viata++;
+void Player::Creste_Sansa_Glont() {
+    sansa++;
 }
 
-int Player::Get_Viata() const {
-    return viata;
+int Player::Get_Sansa() const {
+    return sansa;
 }
 
 const std::string & Player::Get_Nume() const {
@@ -129,12 +129,21 @@ const std::string & Player::Get_Nume() const {
 }
 
 bool Player::Alive() const {
-    return viata < glont;
+    return sansa < glont;
 }
 
 void Player::Invarte_Revolver(int alt_glont) {
     glont=alt_glont;
 }
+
+std::string Player::Get_Padding(const size_t lungime) const {
+    std::string nume = Get_Nume();
+    if (nume.length() < lungime) {
+        nume += std::string(lungime - nume.length(), ' ');
+    }
+    return nume;
+}
+
 
 std::ostream& operator<<(std::ostream& os,const Player& player) {
     os<<player.nume<<": ";

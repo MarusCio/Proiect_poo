@@ -13,7 +13,7 @@
 class Player {
     std::string nume;
     std::vector<std::string> mana;
-    int viata{};
+    int sansa{};
     std::vector<int> carti_alese;
     int glont{};
 
@@ -31,11 +31,13 @@ public:
     [[nodiscard]] const std::vector<std::string>& Get_Carti() const;
     [[nodiscard]] bool Fara_Carti() const;
     void Reset_Carti(Pachet_Carti& pachet);
-    void Creste_Viata();
-    [[nodiscard]] int Get_Viata() const;
+    void Creste_Sansa_Glont();
+    [[nodiscard]] int Get_Sansa() const;
     [[nodiscard]] const std::string& Get_Nume() const;
     [[nodiscard]] bool Alive() const;
     void Invarte_Revolver(int alt_glont);
+    [[nodiscard]] std::string Get_Padding(size_t lungime) const;
+
 
     friend std::ostream& operator<<(std::ostream& os,const Player& player);
 };

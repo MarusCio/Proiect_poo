@@ -29,16 +29,18 @@ int Joc::Set_Dificultate() {
     std::cout<<std::endl;
 
     while (nr_playeri<1 || nr_playeri>3) {
+
         if (nr_playeri<1) {
-            std::cout<<"Daca refuzi sa te joci te omoara oricum..."<<std::endl;
-            std::cout<<"Deci numarul de rusi cu care vrei sa te joci este:"<<std::endl;
-            std::cin>>nr_playeri;
+            std::cout<<"Daca refuzi sa te joci, ei o sa te omoare oricum... Macar incearca!"<<std::endl;
         }
+
         else{
-            std::cout<<"Poti juca maxim cu 3 rusii... NU ii enerva!"<<std::endl;
-            std::cout<<"Deci numarul de rusi cu care vrei sa te joci este:"<<std::endl;
-            std::cin>>nr_playeri;
+            std::cout<<"Poti juca maxim cu 3 rusi... NU ii enerva!"<<std::endl;
         }
+
+        std::cout<<"Deci, numarul de rusi cu care vrei sa te joci este:";
+        std::cin>>nr_playeri;
+        std::cout<<std::endl;
     }
 
     this->dificultate=nr_playeri;
@@ -66,16 +68,16 @@ bool Joc::Minte(Player &jucator_crt, Player &adversar, const Table &masa) {
 
         if (!toate_corecte) {
             std::cout<<jucator_crt.Get_Nume()<<" a mintit! "<<std::endl;
-            jucator_crt.Creste_Viata();
-            std::cout<<jucator_crt.Get_Nume()<<": "<<jucator_crt.Get_Viata()<<"/6"<<std::endl;
+            jucator_crt.Creste_Sansa_Glont();
+            std::cout<<jucator_crt.Get_Nume()<<": "<<jucator_crt.Get_Sansa()<<"/6"<<std::endl;
             std::cout<<std::endl;
 
             return true;
         }
         else {
             std::cout<<jucator_crt.Get_Nume()<<" nu a mintit! "<<std::endl;
-            adversar.Creste_Viata();
-            std::cout<<adversar.Get_Nume()<<": "<<adversar.Get_Viata()<<"/6"<<std::endl;
+            adversar.Creste_Sansa_Glont();
+            std::cout<<adversar.Get_Nume()<<": "<<adversar.Get_Sansa()<<"/6"<<std::endl;
             std::cout<<std::endl;
             return true;
 
@@ -117,8 +119,8 @@ void Joc::Incepe_Joc() {
 
         if (jucatori_la_masa.size() == 1) {
             std::cout<<std::endl<<"==== CASTIGATORUL ESTE: "<<jucatori_la_masa[0]->Get_Nume()<<" ===="<<std::endl;
-            if (jucatori_la_masa[0]->Get_Nume()=="Marius") std::cout<<"Felicitari ai reusit sa bati rusii la jocul lor!"<<std::endl;
-            else std::cout<<"Din pacate ai murit... Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
+            if (jucatori_la_masa[0]->Get_Nume()=="Marius") std::cout<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
+            else std::cout<<"Din pacate ai murit...🕊️💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;
         }
 
@@ -148,8 +150,8 @@ void Joc::Incepe_Joc() {
 
                 if (jucatori_la_masa.size() == 2) {
                     std::cout << jucator_curent.Get_Nume() << " Nu mai are carti! ";
-                    jucator_urmator.Creste_Viata();
-                    std::cout << jucator_urmator.Get_Nume() << ": " << jucator_urmator.Get_Viata() << "/6" << std::endl << std::endl;
+                    jucator_urmator.Creste_Sansa_Glont();
+                    std::cout << jucator_urmator.Get_Nume() << ": " << jucator_urmator.Get_Sansa() << "/6" << std::endl << std::endl;
                     break;
                 }
 
@@ -180,12 +182,9 @@ void Joc::Incepe_Joc() {
                 }
             }
 
-            for (auto& p : de_eliminat) {
-                auto it = std::find(jucatori_la_masa.begin(), jucatori_la_masa.end(), p);
-                if (it != jucatori_la_masa.end()) {
-                    jucatori_la_masa.erase(it);
-                }
-            }
+            std::erase_if(jucatori_la_masa, [&](const auto& jucator) {
+            return std::find(de_eliminat.begin(), de_eliminat.end(), jucator) != de_eliminat.end();
+        });
 
             if (jucatori_la_masa.size() <= 1) {
                 break;
@@ -210,21 +209,27 @@ void Joc::Incepe_Joc() {
     }
 }
 
+int Joc::Get_Lungime_Max() const {
+    int lungime_max = 0;
+    for (int i = 0; i <= dificultate; ++i) {
+        const Player& player = players[i];
+        if (player.Alive() && !player.Fara_Carti()) {
+            lungime_max = std::max(lungime_max, static_cast<int>(player.Get_Nume().length()));
+        }
+    }
+    return lungime_max;
+}
+
 std::ostream& operator<<(std::ostream& os, const Joc& joc) {
     os<<std::endl<<"---------------------"<<std::endl;
     os << joc.table << std::endl;
 
+    const size_t max_nume_length = joc.Get_Lungime_Max();
+
     for (int i = 0; i <= joc.dificultate; ++i) {
         const Player& player = joc.players[i];
         if (player.Alive() && !player.Fara_Carti()) {
-            if (player.Get_Nume()=="Marius")
-            os << player.Get_Nume() << "  | Glont: " << player.Get_Viata() << "/6 | Mana: ";
-            else if (player.Get_Nume()=="Ivan")
-                os << player.Get_Nume() << "    | Glont: " << player.Get_Viata() << "/6 | Mana: ";
-            else if (player.Get_Nume()=="Aleksei")
-                os << player.Get_Nume() << " | Glont: " << player.Get_Viata() << "/6 | Mana: ";
-            else if (player.Get_Nume()=="Dimitri")
-                os << player.Get_Nume() << " | Glont: " << player.Get_Viata() << "/6 | Mana: ";
+            os << player.Get_Padding(max_nume_length)<<" | Glont: "<<player.Get_Sansa()<<"/6 | Mana: ";
 
             for (const auto& carte : player.Get_Carti()) {
                 os << carte << " ";
@@ -232,7 +237,9 @@ std::ostream& operator<<(std::ostream& os, const Joc& joc) {
             os << std::endl;
         }
     }
+
     os << "---------------------" << std::endl;
     return os;
 }
+
 
