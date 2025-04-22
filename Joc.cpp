@@ -48,8 +48,8 @@ int Joc::Set_Dificultate() {
     return dificultate;
 }
 
-void Joc::Reset_Revolver(const std::vector<Player *> &players) {
-    for (const auto& player : players)
+void Joc::Reset_Revolver(const std::vector<Player *> &players_) {
+    for (const auto& player : players_)
         player->Invarte_Revolver(rand() % 6 + 1);
 }
 
@@ -87,12 +87,12 @@ bool Joc::Minte(Player &jucator_crt, Player &adversar, const Table &masa) {
     return false;
 }
 
-std::vector<Player *> Joc::Jucatori_Activi(std::vector<Player *> &jucatori_initiali, Pachet_Carti &carti) {
+std::vector<Player *> Joc::Jucatori_Activi(std::vector<Player *> &jucatori_initiali, Pachet_Carti &carti_) {
     std::vector<Player*> activi;
 
     for (auto& jucator : jucatori_initiali) {
         if (jucator->Alive()) {
-            jucator->Reset_Carti(carti);
+            jucator->Reset_Carti(carti_);
             activi.push_back(jucator);
         }
     }

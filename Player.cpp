@@ -137,11 +137,11 @@ void Player::Invarte_Revolver(int alt_glont) {
 }
 
 std::string Player::Get_Padding(const size_t lungime) const {
-    std::string nume = Get_Nume();
-    if (nume.length() < lungime) {
-        nume += std::string(lungime - nume.length(), ' ');
+    std::string nume_player = Get_Nume();
+    if (nume_player.length() < lungime) {
+        nume_player += std::string(lungime - nume_player.length(), ' ');
     }
-    return nume;
+    return nume_player;
 }
 
 
