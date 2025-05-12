@@ -1,21 +1,33 @@
 # 🍻 Liar's Bar 🔫
 
-Ești în vizită prin Mama Rusia și ți se face sete, așa că intri în primul bar pe care îl vezi, ca să tragi și tu la măsea ceva bun.
-Te așezi frumos la masă și vezi cum vin trei rusnaci la tine. Ei te forțează să joci jocul lor, care este o combinație dintre Trombon și Ruleta rusească, iar dacă refuzi să te joci ești **cooked** 🔥.
-Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dintre ei vrei să te joci. 😏
+Ești în vizită prin **Mama Rusia** și ți se face sete, așa că intri în primul bar pe care îl vezi, ca să tragi și tu la măsea ceva bun.
+Te așezi frumos la masă și vezi cum vin trei rusnaci la tine. Ei te forțează să joci unul din jocurile lor, iar dacă refuzi să te joci ești **cooked** 🔥.
+Rușii par să fie drăguți cu tine, așa că te lasă să alegi jocul și cu câți dintre ei vrei să te joci. 😏
 
 
 ## ⚔️Instrucțiuni (**nimeni nu citește instrucțiuni, dar aici te joci cu viața ta...☠️**)
+Alege unul din cele 2 jocuri, altfel nu te vad bine...⚰️:
+1️⃣ **Liar's Deck**
 În funcție de **masa aleasă random** 🎲 de unul dintre ruși la începutul fiecărei runde, trebuie să minți cât de bine poți sau să încerci să ghicești dacă unul dintre ruși a mințit.
 
 
 **Fiecare jucător are**:
-- Cinci cărți din mulțimea {Q, K, A, JOKER}
+- Cinci cărți din mulțimea **{Q, K, A, JOKER}**
 - Un **revolver** cu un **glonț** din șase
+
+
+2️⃣ **Liar's Dice**
+Jocul se desfășoară în runde, în care jucătorii fac pariuri progresive despre câte zaruri de o anumită valoare cred că există în total pe masă.
+
+**Fiecare jucător are**:
+- Cinci zaruri 
+- Două **shot-uri** de **Spirytus Rektyfikowany** o vodkă **puternic dezvoltată** care sperie chiar și rușii, având doar **96% ABV**
 
 
 
 ## 🎮 How to play:
+
+#### Liar's deck 🃏
 1️⃣ Jucătorii aleg 1-3 cărți din mână.
 
 2️⃣ Dacă un jucător este prins mințind, el trebuie să-și tragă un glonț în cap folosind revolverul său (glonțul poate fi orb... sau adevărat).
@@ -24,13 +36,27 @@ Rușii par să fie drăguți cu tine, așa că te lasă să alegi cu câți dint
 
 4️⃣ Dacă un jucător rămâne fără cărți, iar ultimele lui declarații au fost adevărate, adversarul precedent trebuie să se împuște.
 
+#### Liar's dice 🎲
+1️⃣ Primul jucător face o declarație.
+
+2️⃣ Următorul jucător are două opțiuni:
+- creste pariul
+- acuză jucător anterior: pe masă sunt mai puține zaruri de acea valoare
+- anunță SPOT ON: declarația jucătorului anterior conține exact numărul de zaruri, de la masa, cu valoare respectivă 
+
+3️⃣ Dacă jucătorul anterior minte, el trebuie sa bea un shot, în caz contrar acuzatorul bea un shot 🥃
+
+4️⃣ Daca un jucător nimerește **SPOT ON-ul**, toată lumea de la masa bea un shot
+
+
+
 **⚠️ Pe scurt: pierzi o rundă, ești cu un pas mai aproape de moarte! 💀**
 🍀**Succes**!🍀
 
 
 #### De implementat:
 - ~~jocul continua cand un player nu mai are carti in mana~~
-- adaugare mod de joc
+- ~~adaugare mod de joc~~
 - rezolvare buguri
 
 ## Instrucțiuni de compilare
