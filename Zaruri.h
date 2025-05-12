@@ -13,7 +13,7 @@ class Zaruri{
 
 public:
     Zaruri();
-    Zaruri(std::vector<std::string>zaruri);
+    Zaruri(const std::vector<std::string> &zaruri);
     Zaruri(const Zaruri &x);
     ~Zaruri();
 

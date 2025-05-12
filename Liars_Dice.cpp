@@ -15,13 +15,15 @@ Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &m
 
 Liars_Dice::Liars_Dice(const Liars_Dice &x): Joc(x.dificultate), zaruri{x.zaruri} {}
 
-Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x) {
+Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
 
-    this->zaruri=x.zaruri;
+    this->zaruri=x_.zaruri;
     return *this;
 }
 
 Liars_Dice::~Liars_Dice() = default;
+
+std::string Liars_Dice::Get_To_String(const int x) {return To_String(x);}
 
 bool Liars_Dice::Este_Numar(const std::string &s) {
     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
@@ -47,14 +49,10 @@ void Liars_Dice::Incepe_Joc() {
     for (int i = 0; i <= dif; ++i)
         jucatori_initiali.push_back(&players[i]);
 
-    std::string valoare = "0", numar = "0";
-    size_t idx = 0;
-
     while (true) {
         std::vector<Player*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali);
 
-        idx = 0;
-
+        size_t idx = 0;
 
         if (jucatori_la_masa.size() == 1) {
             if (jucatori_la_masa[0]->Get_Nume()=="Marius") std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
@@ -62,8 +60,7 @@ void Liars_Dice::Incepe_Joc() {
             break;
         }
 
-        numar = "0";
-        valoare = "0";
+        std::string numar = "0", valoare="0";
         bool runda_terminata = false;
 
         while (!runda_terminata) {
@@ -80,8 +77,8 @@ void Liars_Dice::Incepe_Joc() {
                     std::cin >> nou_numar >> noua_valoare;
                 }
 
-                numar = std::to_string(nou_numar);
-                valoare = std::to_string(noua_valoare);
+                numar = Get_To_String(nou_numar);
+                valoare = Get_To_String(noua_valoare);
 
             }
             else {
@@ -92,7 +89,7 @@ void Liars_Dice::Incepe_Joc() {
                 if (comanda == "liar") {
                     Player* anterior = jucatori_la_masa[(idx + jucatori_la_masa.size() - 1) % jucatori_la_masa.size()];
                     int total = 0;
-                    for (auto* p : jucatori_la_masa)
+                    for (const auto* p : jucatori_la_masa)
                         total += p->Numar_Zaruri_Egale(valoare);
 
                     std::cout << "Total zaruri cu valoarea " << valoare << ": " << total << "\n";
@@ -110,7 +107,7 @@ void Liars_Dice::Incepe_Joc() {
                 }
                 else if (comanda == "spot") {
                     int total = 0;
-                    for (auto* p : jucatori_la_masa)
+                    for (const auto* p : jucatori_la_masa)
                         total += p->Numar_Zaruri_Egale(valoare);
 
                     std::cout << "Verificare SPOT ON (necesar: " << numar << ", total: " << total << ")\n";
@@ -148,8 +145,8 @@ void Liars_Dice::Incepe_Joc() {
                         continue;
                     }
 
-                    numar = std::to_string(nou_numar);
-                    valoare = std::to_string(noua_valoare);
+                    numar = Get_To_String(nou_numar);
+                    valoare = Get_To_String(noua_valoare);
 
                 } else {
                     std::cout << "Comanda invalida! Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n";

@@ -24,13 +24,13 @@ Jocul se desfășoară în runde, în care jucătorii fac pariuri progresive des
 
 **Fiecare jucător are**:
 - Cinci zaruri 
-- Două **shot-uri** de **Spirytus Rektyfikowany** o vodkă **puternic dezvoltată** care sperie chiar și rușii, având doar **96% ABV**
+- Două **shot-uri** de **Spirytus Rektyfikowany 🍷** o vodkă **puternic dezvoltată 💪** care sperie chiar și rușii, având doar **96% ABV**
 
 
 
 ## 🎮 How to play:
 
-#### Liar's deck 🃏
+### 🃏 Liar's deck 🃏
 1️⃣ Jucătorii aleg 1-3 cărți din mână.
 
 2️⃣ Dacă un jucător este prins mințind, el trebuie să-și tragă un glonț în cap folosind revolverul său (glonțul poate fi orb... sau adevărat).
@@ -39,7 +39,7 @@ Jocul se desfășoară în runde, în care jucătorii fac pariuri progresive des
 
 4️⃣ Dacă un jucător rămâne fără cărți, iar ultimele lui declarații au fost adevărate, adversarul precedent trebuie să se împuște.
 
-#### Liar's dice 🎲
+### 🎲 Liar's dice 🎲
 1️⃣ Primul jucător face o declarație.
 
 2️⃣ Următorul jucător are două opțiuni:

@@ -6,7 +6,7 @@
 
 Zaruri::Zaruri() = default;
 
-Zaruri::Zaruri(std::vector<std::string> zaruri): zaruri{zaruri} {}
+Zaruri::Zaruri(const std::vector<std::string> &zaruri): zaruri{zaruri} {}
 
 Zaruri::Zaruri(const Zaruri &x): zaruri{x.zaruri} {}
 
