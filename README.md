@@ -7,8 +7,10 @@ Rușii par să fie drăguți cu tine, așa că te lasă să alegi jocul și cu c
 
 ## ⚔️Instrucțiuni (**nimeni nu citește instrucțiuni, dar aici te joci cu viața ta...☠️**)
 Alege unul din cele 2 jocuri, altfel nu te vad bine...⚰️:
-1️⃣ **Liar's Deck**
-În funcție de **masa aleasă random** 🎲 de unul dintre ruși la începutul fiecărei runde, trebuie să minți cât de bine poți sau să încerci să ghicești dacă unul dintre ruși a mințit.
+
+1️⃣ **Liar's Deck** 🃏
+
+În funcție de **masa aleasă random** de unul dintre ruși **la începutul fiecărei runde**, trebuie să minți cât de bine poți sau să încerci să ghicești dacă unul dintre ruși a mințit.
 
 
 **Fiecare jucător are**:
@@ -16,7 +18,8 @@ Alege unul din cele 2 jocuri, altfel nu te vad bine...⚰️:
 - Un **revolver** cu un **glonț** din șase
 
 
-2️⃣ **Liar's Dice**
+2️⃣ **Liar's Dice** 🎲
+
 Jocul se desfășoară în runde, în care jucătorii fac pariuri progresive despre câte zaruri de o anumită valoare cred că există în total pe masă.
 
 **Fiecare jucător are**:
