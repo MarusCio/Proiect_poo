@@ -4,7 +4,16 @@
 
 #include "Player.h"
 
+#include <algorithm>
+
 Player::Player() = default;
+
+Player::Player(const std::string &nume, Zaruri &mana, const int sansa) {
+    // Player(){
+    this->nume=nume;
+    this->mana=mana.Extrage_Mana();
+    this->sansa=sansa;
+}
 
 Player::Player(const std::string &nume, Pachet_Carti &mana, const int sansa) {
     // Player(){
@@ -108,12 +117,20 @@ const std::vector<std::string> & Player::Get_Carti() const {
     return mana;
 }
 
+const std::vector<std::string> & Player::Get_Zaruri() const {
+    return mana;
+}
+
 bool Player::Fara_Carti() const {
     return mana.empty();
 }
 
 void Player::Reset_Carti(Pachet_Carti &pachet) {
     mana = pachet.Extrage_Mana();
+}
+
+void Player::Reset_Zaruri() {
+    mana=Zaruri::Extrage_Mana();
 }
 
 void Player::Creste_Sansa_Glont() {
@@ -132,20 +149,29 @@ bool Player::Alive() const {
     return sansa < glont;
 }
 
+bool Player::Is_Alive() const { return sansa<2; }
+
 void Player::Invarte_Revolver(int alt_glont) {
     glont=alt_glont;
+}
+
+int Player::Numar_Zaruri_Egale(const std::string &valoare) const {
+    int count = 0;
+    for (const std::string& z : mana)
+        if (z == valoare || z == "1")
+            ++count;
+    return count;
 }
 
 std::string Player::Get_Padding(const size_t lungime) const {
     std::string nume_player = Get_Nume();
     if (nume_player.length() < lungime) {
-        nume_player += std::string(lungime - nume_player.length(), ' ');
+        nume_player += std::string(lungime - nume.length(), ' ');
     }
     return nume_player;
 }
 
-
-std::ostream& operator<<(std::ostream& os,const Player& player) {
+std::ostream & operator<<(std::ostream &os, const Player &player) {
     os<<player.nume<<": ";
     for (size_t i = 0; i < player.mana.size(); i++) {
         os<<i+1<<")"<<player.mana[i]<<" ";

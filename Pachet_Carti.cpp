@@ -35,7 +35,7 @@ std::vector<std::string> Pachet_Carti::Extrage_Mana() {
     return mana;
 }
 
-std::ostream& operator<<(std::ostream& os,const std::vector<std::string>& mana) {
+std::ostream & operator<<(std::ostream &os, const std::vector<std::string> &mana) {
     os<<"Mana: ";
     for(const auto & i : mana) {
         std::cout<<i<<" ";

@@ -32,7 +32,7 @@ int Table::Table_Index() const {
     return index_table;
 }
 
-std::ostream& operator<<(std::ostream& os,const Table& table) {
+std::ostream & operator<<(std::ostream &os, const Table &table) {
     os<<"Masa aleasa: "<<table.table_name<<" ";
     return os;
 }
