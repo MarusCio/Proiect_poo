@@ -19,7 +19,7 @@ void Afis_Moduri() {
     std::cout<<"Mod de joc: ";
 }
 
-void Avertismente(int x) {
+void Avertismente(const int x) {
     std::cout<<std::endl;
     if (x==0) {
         std::cout<<"⚠️ Trebuie sa alegi unul dintre modurile de joc ⚠️\n";

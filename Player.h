@@ -41,7 +41,7 @@ public:
     bool Is_Alive() const;
     void Invarte_Revolver(int alt_glont);
     int Numar_Zaruri_Egale(const std::string& valoare) const;
-    [[nodiscard]] std::string Get_Padding(const size_t lungime) const;
+    [[nodiscard]] std::string Get_Padding(size_t lungime) const;
 
     friend std::ostream& operator<<(std::ostream& os,const Player& player);
 };

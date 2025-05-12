@@ -3,6 +3,8 @@
 //
 
 #include "Zaruri.h"
+#include "Liars_Dice.h"
+#include "convertire_string.h"
 
 Zaruri::Zaruri() = default;
 
@@ -20,8 +22,8 @@ Zaruri & Zaruri::operator=(const Zaruri &x) {
 std::vector<std::string> Zaruri::Extrage_Mana() {
     std::vector<std::string> mana;
     for(int i=0;i<5;i++) {
-        int zar = rand() % 6 + 1;
-        mana.push_back(std::to_string(zar));
+        const int zar = rand() % 6 + 1;
+        mana.push_back(Get_To_String2(zar));
     }
     return mana;
 }

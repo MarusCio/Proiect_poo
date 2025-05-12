@@ -37,7 +37,7 @@ Player & Player::operator=(const Player &x) {
 
 Player::~Player() = default;
 
-void Player::Index_Pt_Carti(int nr, std::vector<int> &indecsi) const {
+void Player::Index_Pt_Carti(const int nr, std::vector<int> &indecsi) const {
     int index;
     for (int i=0;i<nr;i++) {
         std::cin>>index;

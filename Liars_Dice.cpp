@@ -23,7 +23,9 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
 
 Liars_Dice::~Liars_Dice() = default;
 
-std::string Liars_Dice::Get_To_String(const int x) {return To_String(x);}
+std::string Liars_Dice::Get_To_String(const int x) {
+    return To_String_Custom(x);
+}
 
 bool Liars_Dice::Este_Numar(const std::string &s) {
     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
