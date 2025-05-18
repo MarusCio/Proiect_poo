@@ -3,7 +3,7 @@
 //
 
 #include "Liars_Dice.h"
-
+#include "Exceptii_Joc.h"
 #include <algorithm>
 
 Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size()), zaruri(mana_zaruri) {
@@ -22,6 +22,10 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
 }
 
 Liars_Dice::~Liars_Dice() = default;
+
+std::unique_ptr<Joc> Liars_Dice::clone() const {
+    return std::make_unique<Liars_Dice>(*this);
+}
 
 std::string Liars_Dice::Get_To_String(const int x) {
     return To_String_Custom(x);
@@ -74,9 +78,10 @@ void Liars_Dice::Incepe_Joc() {
                 int noua_valoare, nou_numar;
                 std::cin >> nou_numar >> noua_valoare;
 
-                while (noua_valoare < 1 || noua_valoare > 6 || nou_numar < 1) {
-                    std::cout << "Valori invalide. Incearca din nou: ";
-                    std::cin >> nou_numar >> noua_valoare;
+                if (noua_valoare < 1 || noua_valoare > 6 || nou_numar < 1) {
+                    throw Eroare_Inceput_Liars_Dice("Ti-am zis mai sus... numarul de zaruri >=1, iar valoarea intre 1 si 6 ");
+                    // std::cout << "Valori invalide. Incearca din nou: ";
+                    // std::cin >> nou_numar >> noua_valoare;
                 }
 
                 numar = Get_To_String(nou_numar);
@@ -98,10 +103,10 @@ void Liars_Dice::Incepe_Joc() {
 
                     if (total < std::stoi(numar)) {
                         std::cout <<anterior->Get_Nume()<<" a mintit! Pe masa este un numar de zaruri < "<<std::stoi(numar)<<". "<<anterior->Get_Nume()<<" trebuie sa dai un shot.\n";
-                        anterior->Creste_Sansa_Glont();
+                        anterior->Bea_Shot();
                     } else {
                         std::cout << crt->Get_Nume() << " a acuzat gresit! Pe masa este un numar de zaruri >= "<<std::stoi(numar)<<"\n";
-                        crt->Creste_Sansa_Glont();
+                        crt->Bea_Shot();
                     }
 
                     runda_terminata = true;
@@ -118,10 +123,10 @@ void Liars_Dice::Incepe_Joc() {
                         std::cout << "SPOT ON! Toti ceilalti trebuie sa dea un shot.\n";
                         for (auto* p : jucatori_la_masa)
                             if (p != crt)
-                                p->Creste_Sansa_Glont();
+                                p->Bea_Shot();
                     } else {
                         std::cout << "Spot gresit! " << crt->Get_Nume() << " bea un shot.\n";
-                        crt->Creste_Sansa_Glont();
+                        crt->Bea_Shot();
                     }
 
                     runda_terminata = true;
@@ -151,7 +156,8 @@ void Liars_Dice::Incepe_Joc() {
                     valoare = Get_To_String(noua_valoare);
 
                 } else {
-                    std::cout << "Comanda invalida! Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n";
+                    throw Eroare_Comanda_LD_Invalida("Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n");
+                    // std::cout << "Comanda invalida! Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n";
                     continue;
                 }
             }
@@ -207,7 +213,7 @@ std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
     for (int i = 0; i <= joc.dificultate; ++i) {
         const Player& player = joc.players[i];
         if (player.Is_Alive()) {
-            os << player.Get_Padding(max_nume_length)<<" | Pahare: "<<player.Get_Sansa()<<"/2 | Zaruri: ";
+            os << player.Get_Padding(max_nume_length)<<" | Shot-uri: "<<player.Get_Shot()<<"/2 | Zaruri: ";
 
             for (const auto& zar : player.Get_Zaruri()) {
                 os << zar << " ";

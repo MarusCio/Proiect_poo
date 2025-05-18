@@ -4,6 +4,7 @@
 
 #ifndef JOC_H
 #define JOC_H
+#include <memory>
 #include <vector>
 
 #include "Player.h"
@@ -19,6 +20,7 @@ public:
     Joc(int dif);
     virtual ~Joc();
 
+    [[nodiscard]] virtual std::unique_ptr<Joc> clone() const = 0;
     virtual void Incepe_Joc() =0;
     int Set_Dificultate();
     [[nodiscard]] virtual int Get_Lungime_Max() const;

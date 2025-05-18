@@ -15,12 +15,13 @@ class Player {
     int sansa{};
     std::vector<int> carti_alese;
     int glont{};
+    int shot{};
 
 public:
 
     Player();
-    Player(const std::string &nume,Zaruri& mana, const int sansa);
-    Player(const std::string &nume,Pachet_Carti& mana, const int sansa);
+    Player(const std::string &nume,Zaruri& mana, int shot);
+    Player(const std::string &nume,Pachet_Carti& mana, int sansa);
     Player(const Player& x);
     Player &operator=(const Player &x);
     ~Player();
@@ -37,6 +38,8 @@ public:
     void Creste_Sansa_Glont();
     [[nodiscard]] int Get_Sansa() const;
     [[nodiscard]] const std::string& Get_Nume() const;
+    void Bea_Shot();
+    [[nodiscard]] int Get_Shot() const;
     [[nodiscard]] bool Alive() const;
     bool Is_Alive() const;
     void Invarte_Revolver(int alt_glont);

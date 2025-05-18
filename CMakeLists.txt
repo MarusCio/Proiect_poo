@@ -73,6 +73,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Liars_Dice.h
         Zaruri.cpp
         Zaruri.h
+        Exceptii_Joc.cpp
+        Exceptii_Joc.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

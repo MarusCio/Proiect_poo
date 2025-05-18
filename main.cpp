@@ -1,7 +1,9 @@
 #include <iostream>
+#include <memory>
 #include <vector>
 #include <random>
 
+#include "Exceptii_Joc.h"
 #include "Liars_Deck.h"
 #include "Liars_Dice.h"
 #include "Pachet_Carti.h"
@@ -36,23 +38,16 @@ void Avertismente(const int x) {
 
 int main() {
     srand(time(nullptr));
-
-    Pachet_Carti pachet;
-    Zaruri zaruri;
-    pachet.Amesteca_Pachet();
     int mod_de_joc;
+    bool verificare=false;
+    std::unique_ptr<Joc> joc_crt;
 
-    Liars_Deck joc({"Marius","Ivan","Aleksei","Dimitri"},pachet);
-    Liars_Dice joc2({"Marius","Ivan","Aleksei","Dimitri"},zaruri);
 
     std::cout<<"\n----------- Privet! -----------\n";
-    std::cout<<"Moduri de joc:\n";
-    std::cout<<"1) --> LIAR'S DECK 🃏\n";
-    std::cout<<"2) --> LIAR'S DICE 🎲\n";
-    std::cout<<"Mod de joc: ";
+    Afis_Moduri();
     std::cin>>mod_de_joc;
-    int eroare=0;
 
+    int eroare=0;
     while (mod_de_joc!=1 && mod_de_joc!=2) {
         if (eroare==3) {mod_de_joc=1; break;}
 
@@ -62,46 +57,83 @@ int main() {
         eroare++;
     }
     std::cout<<std::endl;
-    if (mod_de_joc==1) joc.Incepe_Joc();
-    else joc2.Incepe_Joc();
 
-    eroare=0;
-    std::string joc_nou;
-    std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
-    std::cin>>joc_nou;
-
-    int mod_de_joc_nou;
-    while (joc_nou == "da") {
-        std::cout<<std::endl;
-
-        Pachet_Carti pachet2;
-        Zaruri zaruri2;
-        pachet2.Amesteca_Pachet();
-        Liars_Deck joc3({"Marius","Ivan","Aleksei","Dimitri"},pachet2);
-        Liars_Dice joc4({"Marius","Ivan","Aleksei","Dimitri"},zaruri2);
-
-        Afis_Moduri();
-        std::cin>>mod_de_joc_nou;
-
-        while (mod_de_joc_nou!=1 && mod_de_joc_nou!=2) {
-
-            if (eroare==3) {mod_de_joc_nou=1; break;}
-            Avertismente(eroare);
-            std::cin>>mod_de_joc_nou;
-
-            eroare++;
+    try {
+        if (mod_de_joc==1) {
+            Pachet_Carti pachet;
+            pachet.Amesteca_Pachet();
+            joc_crt = std::make_unique<Liars_Deck>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, pachet);
         }
+        else {
+            Zaruri zaruri;
+            joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
+        }
+        joc_crt->Incepe_Joc();
 
-        std::cout<<std::endl;
-        if (mod_de_joc_nou==1) joc3.Incepe_Joc();
-        else joc4.Incepe_Joc();
-
+        eroare=0;
+        std::string joc_nou;
         std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
         std::cin>>joc_nou;
+
+        int mod_de_joc_nou;
+        while (joc_nou == "da") {
+            std::cout<<std::endl;
+
+            Afis_Moduri();
+            std::cin>>mod_de_joc_nou;
+
+            while (mod_de_joc_nou!=1 && mod_de_joc_nou!=2) {
+
+                if (eroare==3) {mod_de_joc_nou=1; break;}
+                Avertismente(eroare);
+                std::cin>>mod_de_joc_nou;
+
+                eroare++;
+            }
+
+            std::cout<<std::endl;
+
+
+            if (mod_de_joc_nou==1) {
+                Pachet_Carti pachet2;
+                pachet2.Amesteca_Pachet();
+                joc_crt = std::make_unique<Liars_Deck>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, pachet2);
+            }
+            else {
+                Zaruri zaruri2;
+                joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri2);
+            }
+            joc_crt->Incepe_Joc();
+
+            std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
+            std::cin>>joc_nou;
+        }
+    }
+    catch (const Eroare_Numar_Playeri& e){
+        std::cout << "Eroare: " << e.what()<< "\n";
+        verificare=true;
+    }
+    catch (const Eroare_Index_Invalid& e) {
+        std::cout << "Eroare: " << e.what()<< "\n";
+        verificare=true;
+    }
+    catch (const Eroare_Declarare_Minciuna& e) {
+        std::cout << "Eroare: " << e.what()<< "\n";
+        verificare=true;
+    }
+    catch (const Eroare_Inceput_Liars_Dice& e) {
+        std::cout << "Eroare: " << e.what()<< "\n";
+        verificare=true;
+    }
+    catch (const Eroare_Comanda_LD_Invalida& e) {
+        std::cout << "Eroare: " << e.what()<< "\n";
+        verificare=true;
     }
 
+
     std::cout<<std::endl<<"-----------------------------------------"<<std::endl;
-    std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
+    if (verificare==false) std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
+    else std::cout<<"Fii mai atent la inputuri!"<<std::endl;
     std::cout<<"-----------------------------------------"<<std::endl;
 }
 

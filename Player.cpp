@@ -3,16 +3,16 @@
 //
 
 #include "Player.h"
-
+#include "Exceptii_Joc.h"
 #include <algorithm>
 
 Player::Player() = default;
 
-Player::Player(const std::string &nume, Zaruri &mana, const int sansa) {
+Player::Player(const std::string &nume, Zaruri &mana, const int shot) {
     // Player(){
     this->nume=nume;
     this->mana=mana.Extrage_Mana();
-    this->sansa=sansa;
+    this->shot=shot;
 }
 
 Player::Player(const std::string &nume, Pachet_Carti &mana, const int sansa) {
@@ -24,7 +24,7 @@ Player::Player(const std::string &nume, Pachet_Carti &mana, const int sansa) {
     this->glont=rand()%6+1;
 }
 
-Player::Player(const Player &x): nume{x.nume},mana{x.mana},sansa{x.sansa},carti_alese{x.carti_alese},glont{x.glont} {}
+Player::Player(const Player &x): nume{x.nume},mana{x.mana},sansa{x.sansa},carti_alese{x.carti_alese},glont{x.glont},shot{x.shot}{}
 
 Player & Player::operator=(const Player &x) {
     this->nume=x.nume;
@@ -32,6 +32,7 @@ Player & Player::operator=(const Player &x) {
     this->sansa=x.sansa;
     this->carti_alese=x.carti_alese;
     this->glont=x.glont;
+    this->shot=x.shot;
     return *this;
 }
 
@@ -42,9 +43,10 @@ void Player::Index_Pt_Carti(const int nr, std::vector<int> &indecsi) const {
     for (int i=0;i<nr;i++) {
         std::cin>>index;
 
-        while (index < 1 || index>static_cast<int>(mana.size())) {
-            std::cout<<"vezi cate carti ai in mana + numerotarea cartilor incepe de la 1"<<std::endl;
-            std::cin>>index;
+        if (index < 1 || index>static_cast<int>(mana.size())) {
+            // std::cout<<"Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1"<<std::endl;
+            // std::cin>>index;
+            throw Eroare_Index_Invalid("Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1\n");
         }
 
         indecsi.push_back(index - 1);
@@ -145,11 +147,19 @@ const std::string & Player::Get_Nume() const {
     return nume;
 }
 
+void Player::Bea_Shot() {
+    shot++;
+}
+
+int Player::Get_Shot() const {
+    return shot;
+}
+
 bool Player::Alive() const {
     return sansa < glont;
 }
 
-bool Player::Is_Alive() const { return sansa<2; }
+bool Player::Is_Alive() const { return shot<2; }
 
 void Player::Invarte_Revolver(int alt_glont) {
     glont=alt_glont;

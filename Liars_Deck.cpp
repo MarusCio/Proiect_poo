@@ -4,7 +4,7 @@
 
 
 #include "Liars_Deck.h"
-
+#include "Exceptii_Joc.h"
 #include <algorithm>
 
 
@@ -25,6 +25,10 @@ Liars_Deck & Liars_Deck::operator=(const Liars_Deck &x) {
 
 Liars_Deck::~Liars_Deck() = default;
 
+std::unique_ptr<Joc> Liars_Deck::clone() const {
+    return std::make_unique<Liars_Deck>(*this);
+}
+
 void Liars_Deck::Reset_Revolver(const std::vector<Player *> &players_) {
     for (const auto& player : players_)
         player->Invarte_Revolver(rand() % 6 + 1);
@@ -36,7 +40,10 @@ bool Liars_Deck::Minte(Player &jucator_crt, Player &adversar, const Table &masa)
     std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
     std::cin>>minciuna;
 
-    while (minciuna!=0 && minciuna!=1) {std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;}
+    if (minciuna!=0 && minciuna!=1) {
+        throw Eroare_Declarare_Minciuna("Poti scrie doar 0 si 1 aici!");
+        // std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;
+    }
     if (minciuna==1) {
         std::vector<int> carti_jucator = jucator_crt.Get_CartiAlese();
         int masa_aleasa = masa.Table_Index();
