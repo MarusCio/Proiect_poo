@@ -5,6 +5,7 @@
 #ifndef EXCEPTII_JOC_H
 #define EXCEPTII_JOC_H
 #include <stdexcept>
+#include <string>
 
 
 class Exceptii_Joc : public std::runtime_error {
