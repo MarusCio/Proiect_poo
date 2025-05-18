@@ -141,8 +141,10 @@ int main() {
     else std::cout<<"Fii mai atent la inputuri!"<<std::endl;
     std::cout<<"-----------------------------------------"<<std::endl;
 
-    std::cout<<"\nIstoric jocuri jucate: "<<std::endl;
-    for (const auto& joc: jocuri_jucate) {std::cout<<joc->Get_Nume_Joc()<<std::endl;}
+    if (!jocuri_jucate.empty()) {
+        std::cout<<"\nIstoric jocuri jucate: "<<std::endl;
+        for (const auto& joc: jocuri_jucate) std::cout<<joc->Get_Nume_Joc()<<std::endl;
+    }
 }
 
 
