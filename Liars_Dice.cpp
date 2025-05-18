@@ -205,6 +205,8 @@ int Liars_Dice::Get_Lungime_Max() const {
     return lungime_max;
 }
 
+std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE";}
+
 std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
     os<<std::endl<<"---------------------"<<std::endl;
 

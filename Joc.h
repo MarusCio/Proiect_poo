@@ -23,6 +23,7 @@ public:
     [[nodiscard]] virtual std::unique_ptr<Joc> clone() const = 0;
     virtual void Incepe_Joc() =0;
     int Set_Dificultate();
+    [[nodiscard]] virtual std::string Get_Nume_Joc() const = 0;
     [[nodiscard]] virtual int Get_Lungime_Max() const;
 };
 

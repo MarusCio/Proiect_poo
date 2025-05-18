@@ -41,7 +41,7 @@ int main() {
     int mod_de_joc;
     bool verificare=false;
     std::unique_ptr<Joc> joc_crt;
-
+    std::vector<std::unique_ptr<Joc>> jocuri_jucate;
 
     std::cout<<"\n----------- Privet! -----------\n";
     Afis_Moduri();
@@ -69,6 +69,8 @@ int main() {
             joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
         }
         joc_crt->Incepe_Joc();
+
+        jocuri_jucate.push_back(joc_crt->clone());
 
         eroare=0;
         std::string joc_nou;
@@ -105,6 +107,9 @@ int main() {
             }
             joc_crt->Incepe_Joc();
 
+            jocuri_jucate.push_back(joc_crt->clone()); // salvezi copia înainte de Incepe_Joc()
+
+
             std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
             std::cin>>joc_nou;
         }
@@ -135,6 +140,9 @@ int main() {
     if (verificare==false) std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
     else std::cout<<"Fii mai atent la inputuri!"<<std::endl;
     std::cout<<"-----------------------------------------"<<std::endl;
+
+    std::cout<<"\nIstoric jocuri jucate: "<<std::endl;
+    for (const auto& joc: jocuri_jucate) {std::cout<<joc->Get_Nume_Joc()<<std::endl;}
 }
 
 

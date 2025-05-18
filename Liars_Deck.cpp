@@ -35,16 +35,16 @@ void Liars_Deck::Reset_Revolver(const std::vector<Player *> &players_) {
 }
 
 bool Liars_Deck::Minte(Player &jucator_crt, Player &adversar, const Table &masa) {
-    int minciuna;
+    std::string minciuna;
 
     std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
     std::cin>>minciuna;
 
-    if (minciuna!=0 && minciuna!=1) {
+    if (minciuna!="0" && minciuna!="1") {
         throw Eroare_Declarare_Minciuna("Poti scrie doar 0 si 1 aici!");
         // std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;
     }
-    if (minciuna==1) {
+    if (minciuna=="1") {
         std::vector<int> carti_jucator = jucator_crt.Get_CartiAlese();
         int masa_aleasa = masa.Table_Index();
         bool toate_corecte = std::all_of(carti_jucator.begin(), carti_jucator.end(),
@@ -188,6 +188,8 @@ void Liars_Deck::Incepe_Joc() {
         std::cout<<"------------------"<<std::endl;
         // std::cout <<"Se genereaza o masa noua"<< std::endl;
     }}
+
+std::string Liars_Deck::Get_Nume_Joc() const {return "LIAR'S DECK";}
 
 std::ostream & operator<<(std::ostream &os, const Liars_Deck &joc) {
     os<<std::endl<<"---------------------"<<std::endl;
