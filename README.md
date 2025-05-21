@@ -126,10 +126,11 @@ conțin fișiere generate și nu ne ajută să le versionăm.
 
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
   - [OpenAL](https://openal-soft.org/) (LGPL): din cauza licenței, trebuie distribuită ca shared library
+- [dexonline](https://dexonline.ro/definitie/opac/definitii) 
 - adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
 
 
 
 ## Dicționar
-- Opac = Prin care nu poate trece lumina, lipsit de transparență, nestrăveziu. ♦ Care nu permite trecerea unei radiații electromagnetice sau corpusculare. ♦ Lipsit de strălucire, întunecat.
-- Puternic dezvoltat = Expresie folosită obsesiv de **Adelin Petrișor**, având sensul de șmecher. În acest context înseamnă letală 💀
+- **Opac** = Prin care nu poate trece lumina, lipsit de transparență, nestrăveziu. ♦ Care nu permite trecerea unei radiații electromagnetice sau corpusculare. ♦ Lipsit de strălucire, întunecat.
+- **Puternic dezvoltat** = Expresie folosită obsesiv de **Adelin Petrișor**, având sensul de șmecher. În acest context însemnând **letală** 💀
