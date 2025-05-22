@@ -9,7 +9,7 @@
 Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size()), zaruri(mana_zaruri) {
 
     for (const auto& nume : nume_jucatori_) {
-        players.emplace_back(nume, mana_zaruri, 0);
+        players.emplace_back(std::make_unique<Player_Dice>(nume,mana_zaruri));
     }
 }
 
@@ -21,42 +21,47 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
     return *this;
 }
 
-Liars_Dice::~Liars_Dice() = default;
+Liars_Dice::~Liars_Dice() {
+}
 
 std::unique_ptr<Joc> Liars_Dice::clone() const {
     return std::make_unique<Liars_Dice>(*this);
 }
 
-std::string Liars_Dice::Get_To_String(const int x) {
-    return To_String_Custom(x);
-}
-
-bool Liars_Dice::Este_Numar(const std::string &s) {
-    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
-}
-
-std::vector<Player *> Liars_Dice::Jucatori_Activi(std::vector<Player *> &jucatori_initiali) {
-    std::vector<Player*> activi;
+std::vector<Player_Dice *> Liars_Dice::Jucatori_Activi(std::vector<Player_Dice *> &jucatori_initiali) {
+    std::vector<Player_Dice*> activi;
 
     for (auto& jucator : jucatori_initiali) {
-        if (jucator->Is_Alive()) {
+        if (jucator->Alive()) {
             jucator->Reset_Zaruri();
             activi.push_back(jucator);
         }
     }
-
     return activi;
 }
 
-void Liars_Dice::Incepe_Joc() {
-    int dif = Set_Dificultate();
+bool Liars_Dice::Licitatie_Valida(const int valoare_veche, const int numar_vechi, const int valoare_noua,
+    const int numar_nou) {
+    if (valoare_noua < 1 || valoare_noua > 6 || numar_nou < 1) {
+        return false;
+    }
 
-    std::vector<Player*> jucatori_initiali;
-    for (int i = 0; i <= dif; ++i)
-        jucatori_initiali.push_back(&players[i]);
+    return (valoare_noua > valoare_veche) ||
+           (valoare_noua == valoare_veche && numar_nou > numar_vechi);
+}
+
+void Liars_Dice::Joaca_Joc() {
+    const int dif = Set_Dificultate();
+
+    std::vector<Player_Dice*> jucatori_initiali;
+    for (int i=0;i<=dif;i++) {
+        if (auto* dice_player = dynamic_cast<Player_Dice*>(players[i].get())) {
+            jucatori_initiali.push_back(dice_player);
+        }
+    }
 
     while (true) {
-        std::vector<Player*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali);
+        std::vector<Player_Dice*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali);
 
         size_t idx = 0;
 
@@ -66,11 +71,11 @@ void Liars_Dice::Incepe_Joc() {
             break;
         }
 
-        std::string numar = "0", valoare="0";
+        std::string valoare = "0", numar = "0";
         bool runda_terminata = false;
 
         while (!runda_terminata) {
-            Player* crt = jucatori_la_masa[idx];
+            Player_Dice* crt = jucatori_la_masa[idx];
             std::cout<<*this << std::endl;
 
             if (valoare == "0" && numar == "0") {
@@ -84,17 +89,17 @@ void Liars_Dice::Incepe_Joc() {
                     // std::cin >> nou_numar >> noua_valoare;
                 }
 
-                numar = Get_To_String(nou_numar);
-                valoare = Get_To_String(noua_valoare);
+                numar =To_String_Custom(nou_numar);
+                valoare = To_String_Custom(noua_valoare);
 
             }
             else {
                 std::string comanda;
-                std::cout<<crt->Get_Nume()<<", poti scrie (numar de zaruri si valoarea lor / liar / spot): ";
+                std::cout<<crt->Get_Nume()<<", poti scrie (licitatie / liar / spot): ";
                 std::cin >> comanda;
 
                 if (comanda == "liar") {
-                    Player* anterior = jucatori_la_masa[(idx + jucatori_la_masa.size() - 1) % jucatori_la_masa.size()];
+                    Player_Dice* anterior = jucatori_la_masa[(idx + jucatori_la_masa.size() - 1) % jucatori_la_masa.size()];
                     int total = 0;
                     for (const auto* p : jucatori_la_masa)
                         total += p->Numar_Zaruri_Egale(valoare);
@@ -112,7 +117,7 @@ void Liars_Dice::Incepe_Joc() {
                     runda_terminata = true;
                     break;
                 }
-                else if (comanda == "spot") {
+                if (comanda == "spot") {
                     int total = 0;
                     for (const auto* p : jucatori_la_masa)
                         total += p->Numar_Zaruri_Egale(valoare);
@@ -132,32 +137,29 @@ void Liars_Dice::Incepe_Joc() {
                     runda_terminata = true;
                     break;
                 }
-                else if (Este_Numar(comanda)) {
+                if (comanda=="licitatie") {
 
-                    int nou_numar;
-                    int noua_valoare = std::stoi(comanda);
+                    int nou_numar ;
+                    int noua_valoare;
 
+                    std::cout<<"Numarul de zaruri: ";
                     std::cin >> nou_numar;
+                    std::cout<<"Valoarea zarurilor: ";
+                    std::cin>>noua_valoare;
 
-                    int num_curent = std::stoi(numar);
+                    int nr_curent = std::stoi(numar);
                     int val_curenta = std::stoi(valoare);
 
-
-                    bool valid = false;
-                    if ((nou_numar > num_curent && noua_valoare == val_curenta) || (noua_valoare > val_curenta))
-                        valid = true;
-
-                    if (!valid) {
-                        std::cout << "Licitatie invalida! Trebuie sa cresti numarul de zaruri sau valoarea acestora.\n";
+                    if (!Licitatie_Valida(val_curenta, nr_curent, noua_valoare, nou_numar)) {
+                        std::cout << "\nLicitatie invalida! Trebuie sa cresti numarul de zaruri sau valoarea acestora.\n";
                         continue;
                     }
 
-                    numar = Get_To_String(nou_numar);
-                    valoare = Get_To_String(noua_valoare);
+                    numar = To_String_Custom(nou_numar);
+                    valoare = To_String_Custom(noua_valoare);
 
                 } else {
-                    throw Eroare_Comanda_LD_Invalida("Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n");
-                    // std::cout << "Comanda invalida! Scrie un numar de zaruri cu o anumita valoare, 'liar' sau 'spot'.\n";
+                    throw Eroare_Comanda_LD_Invalida("Scrie 'licitatie', 'liar' sau 'spot'.\n");
                     continue;
                 }
             }
@@ -169,14 +171,14 @@ void Liars_Dice::Incepe_Joc() {
         std::vector<Player*> de_eliminat;
 
         for (const auto& p : jucatori_la_masa) {
-            if (!p->Is_Alive()) {
+            if (!p->Alive()) {
                 de_eliminat.push_back(p);
             }
 
         }
 
-        for (const auto* p : jucatori_la_masa) {
-            if (!p->Is_Alive()) {
+        for (auto* p : jucatori_la_masa) {
+            if (!p->Alive()) {
                 std::cout <<"\n🥴🥴🥴 DUFFFFFFFFFFFFFFFFFFFFFF 🥴🥴🥴"<<std::endl<<p->Get_Nume()<< " a intrat in coma alcoolica si a murit!";
                 std::cout<<std::endl;
             }
@@ -194,30 +196,33 @@ void Liars_Dice::Incepe_Joc() {
     }
 }
 
+std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE";}
+
 int Liars_Dice::Get_Lungime_Max() const {
     int lungime_max = 0;
     for (int i = 0; i <= dificultate; ++i) {
-        const Player& player = players[i];
-        if (player.Is_Alive()) {
-            lungime_max = std::max(lungime_max, static_cast<int>(player.Get_Nume().length()));
+        const auto& player = players[i];
+        if (auto* p=dynamic_cast<Player_Dice*>(player.get())) {
+            if (p->Alive()) {
+                lungime_max = std::max(lungime_max, static_cast<int>(p->Get_Nume().length()));
+            }
         }
     }
     return lungime_max;
 }
 
-std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE";}
-
-std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
+std::ostream& operator<<(std::ostream& os, const Liars_Dice& joc) {
     os<<std::endl<<"---------------------"<<std::endl;
 
     const size_t max_nume_length = joc.Get_Lungime_Max();
 
     for (int i = 0; i <= joc.dificultate; ++i) {
-        const Player& player = joc.players[i];
-        if (player.Is_Alive()) {
-            os << player.Get_Padding(max_nume_length)<<" | Shot-uri: "<<player.Get_Shot()<<"/2 | Zaruri: ";
+        // const Player& player = joc.players[i];
+        const auto* player_dice = dynamic_cast<const Player_Dice*>(joc.players[i].get());
+        if (player_dice->Alive()) {
+            os << player_dice->Get_Padding(max_nume_length)<<" | Shot-uri: "<<player_dice->Get_Shot()<<"/2 | Zaruri: ";
 
-            for (const auto& zar : player.Get_Zaruri()) {
+            for (const auto& zar : player_dice->Get_Mana()) {
                 os << zar << " ";
             }
             os << std::endl;
@@ -226,3 +231,4 @@ std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
     os << "---------------------" << std::endl;
     return os;
 }
+

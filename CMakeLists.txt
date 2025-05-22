@@ -75,6 +75,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Zaruri.h
         Exceptii_Joc.cpp
         Exceptii_Joc.h
+        Player_Deck.cpp
+        Player_Deck.h
+        Player_Dice.cpp
+        Player_Dice.h
+        Manager_Joc.cpp
+        Manager_Joc.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

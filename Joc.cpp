@@ -40,13 +40,4 @@ int Joc::Set_Dificultate() {
     return dificultate;
 }
 
-int Joc::Get_Lungime_Max() const {
-    int lungime_max = 0;
-    for (int i = 0; i <= dificultate; ++i) {
-        const Player& player = players[i];
-        if (player.Alive() && !player.Fara_Carti()) {
-            lungime_max = std::max(lungime_max, static_cast<int>(player.Get_Nume().length()));
-        }
-    }
-    return lungime_max;
-}
+

@@ -13,7 +13,7 @@
 class Joc {
 protected:
     int dificultate;
-    std::vector<Player> players;
+    std::vector<std::unique_ptr<Player>> players;
 
 public:
     Joc();
@@ -21,10 +21,10 @@ public:
     virtual ~Joc();
 
     [[nodiscard]] virtual std::unique_ptr<Joc> clone() const = 0;
-    virtual void Incepe_Joc() =0;
+    virtual void Joaca_Joc() =0;
     int Set_Dificultate();
     [[nodiscard]] virtual std::string Get_Nume_Joc() const = 0;
-    [[nodiscard]] virtual int Get_Lungime_Max() const;
+    [[nodiscard]] virtual int Get_Lungime_Max() const = 0;
 };
 
 
