@@ -21,8 +21,7 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
     return *this;
 }
 
-Liars_Dice::~Liars_Dice() {
-}
+Liars_Dice::~Liars_Dice() = default;
 
 std::unique_ptr<Joc> Liars_Dice::clone() const {
     return std::make_unique<Liars_Dice>(*this);
@@ -160,7 +159,6 @@ void Liars_Dice::Joaca_Joc() {
 
                 } else {
                     throw Eroare_Comanda_LD_Invalida("Scrie 'licitatie', 'liar' sau 'spot'.\n");
-                    continue;
                 }
             }
             idx = (idx + 1) % jucatori_la_masa.size();
@@ -177,7 +175,7 @@ void Liars_Dice::Joaca_Joc() {
 
         }
 
-        for (auto* p : jucatori_la_masa) {
+        for (const auto* p : jucatori_la_masa) {
             if (!p->Alive()) {
                 std::cout <<"\n🥴🥴🥴 DUFFFFFFFFFFFFFFFFFFFFFF 🥴🥴🥴"<<std::endl<<p->Get_Nume()<< " a intrat in coma alcoolica si a murit!";
                 std::cout<<std::endl;
@@ -202,7 +200,7 @@ int Liars_Dice::Get_Lungime_Max() const {
     int lungime_max = 0;
     for (int i = 0; i <= dificultate; ++i) {
         const auto& player = players[i];
-        if (auto* p=dynamic_cast<Player_Dice*>(player.get())) {
+        if (const auto* p=dynamic_cast<Player_Dice*>(player.get())) {
             if (p->Alive()) {
                 lungime_max = std::max(lungime_max, static_cast<int>(p->Get_Nume().length()));
             }

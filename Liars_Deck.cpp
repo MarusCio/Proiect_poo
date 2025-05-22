@@ -184,7 +184,7 @@ void Liars_Deck::Joaca_Joc() {
             if (i >= jucatori_la_masa.size()) i = 0;
         }
 
-        for (auto* p : jucatori_la_masa) {
+        for (const auto* p : jucatori_la_masa) {
             if (!p->Alive()) {
                 std::cout <<"🔥🔥🔥 BOOOOOO0000000000000000000000000000000000000000OM 🔥🔥🔥"<<std::endl<<p->Get_Nume()<< " a murit!";
                 std::cout<<std::endl;
@@ -203,7 +203,7 @@ int Liars_Deck::Get_Lungime_Max() const {
     int lungime_max = 0;
     for (int i = 0; i <= dificultate; ++i) {
         const auto& player = players[i];
-        if (auto* p=dynamic_cast<Player_Deck*>(player.get())) {
+        if (const auto* p=dynamic_cast<Player_Deck*>(player.get())) {
             if (p->Alive() && !p->Fara_Carti()) {
                 lungime_max = std::max(lungime_max, static_cast<int>(p->Get_Nume().length()));
             }

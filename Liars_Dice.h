@@ -23,7 +23,7 @@ public:
     Liars_Dice(const std::vector<std::string>& nume_jucatori_, Zaruri& mana_zaruri);
     Liars_Dice(const Liars_Dice& x);
     Liars_Dice& operator=(const Liars_Dice& x_);
-    ~Liars_Dice();
+    ~Liars_Dice() override;
     [[nodiscard]] std::unique_ptr<Joc> clone() const override;
 
     // static bool Este_Numar(const std::string& s) {

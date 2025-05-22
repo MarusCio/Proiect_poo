@@ -126,4 +126,7 @@ void Manager_Joc::Porneste_Joc() {
     if (verificare==false) std::cout<<"Cand iti revine cheful stii unde sa revii"<<std::endl;
     else std::cout<<"Fii mai atent la inputuri!"<<std::endl;
     std::cout<<"-----------------------------------------"<<std::endl;
+
+    Afiseaza_Istoric();
+
 }
