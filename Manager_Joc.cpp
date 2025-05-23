@@ -15,7 +15,7 @@ void Manager_Joc::Incepe_Joc(const int mod) {
         Zaruri zaruri;
         joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
     }
-    joc_crt->Joaca_Joc();
+    joc_crt->Joaca_Joc_Template_Method();
 
     jocuri_jucate.emplace_back(joc_crt->clone());
 }

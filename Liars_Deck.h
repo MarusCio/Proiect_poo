@@ -18,6 +18,8 @@ class Liars_Deck : public Joc {
     //std::vector<Player> players;
     Table table;
     Pachet_Carti carti;
+    std::vector<Player_Deck*> jucatori_initiali;
+
 
 public:
 
@@ -32,7 +34,8 @@ public:
     [[nodiscard]] std::string Get_Nume_Joc() const override;
     static bool Minte(Player_Deck& jucator_crt, Player_Deck& adversar, const Table& masa);
     static std::vector<Player_Deck*> Jucatori_Activi(std::vector<Player_Deck*>& jucatori_initiali, Pachet_Carti& carti_);
-    void Joaca_Joc() override;
+    void Initializare_Jucatori() override;
+    void Ruleaza_Joc() override;
     [[nodiscard]] int Get_Lungime_Max() const override;
     friend std::ostream& operator<<(std::ostream& os, const Liars_Deck& joc);
 };

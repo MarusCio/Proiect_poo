@@ -89,18 +89,28 @@ std::vector<Player_Deck *> Liars_Deck::Jucatori_Activi(std::vector<Player_Deck *
     return activi;
 }
 
-void Liars_Deck::Joaca_Joc() {
-    const int dif = Set_Dificultate();
-    constexpr bool final_joc = true;
-    static const std::string eu="Marius";
-
-    std::vector<Player_Deck*> jucatori_initiali;
-    for (int i=0;i<=dif;i++) {
+void Liars_Deck::Initializare_Jucatori() {
+    jucatori_initiali.clear();
+    for (int i=0;i<=dificultate;i++) {
         if (auto* deck_player = dynamic_cast<Player_Deck*>(players[i].get())) {
             jucatori_initiali.push_back(deck_player);
         }
     }
     Reset_Revolver(jucatori_initiali);
+}
+
+void Liars_Deck::Ruleaza_Joc() {
+    // const int dif = Set_Dificultate();
+    constexpr bool final_joc = true;
+    static const std::string eu="Marius";
+
+    // std::vector<Player_Deck*> jucatori_initiali;
+    // for (int i=0;i<=dif;i++) {
+    //     if (auto* deck_player = dynamic_cast<Player_Deck*>(players[i].get())) {
+    //         jucatori_initiali.push_back(deck_player);
+    //     }
+    // }
+    // Reset_Revolver(jucatori_initiali);
 
 
     // std::cout << *this << std::endl;

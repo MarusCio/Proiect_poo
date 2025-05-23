@@ -11,9 +11,16 @@
 
 
 class Joc {
+public:
+    void Joaca_Joc_Template_Method() {
+        this->Set_Dificultate();
+        this->Initializare_Jucatori();
+        this->Ruleaza_Joc();
+    }
 protected:
     int dificultate;
     std::vector<std::unique_ptr<Player>> players;
+
 
 public:
     Joc();
@@ -21,8 +28,10 @@ public:
     virtual ~Joc();
 
     [[nodiscard]] virtual std::unique_ptr<Joc> clone() const = 0;
-    virtual void Joaca_Joc() =0;
+    // virtual void Joaca_Joc() =0;
     int Set_Dificultate();
+    virtual void Ruleaza_Joc()=0;
+    virtual void Initializare_Jucatori()=0;
     [[nodiscard]] virtual std::string Get_Nume_Joc() const = 0;
     [[nodiscard]] virtual int Get_Lungime_Max() const = 0;
 };

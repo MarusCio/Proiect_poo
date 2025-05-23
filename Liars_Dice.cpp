@@ -49,23 +49,34 @@ bool Liars_Dice::Licitatie_Valida(const int valoare_veche, const int numar_vechi
            (valoare_noua == valoare_veche && numar_nou > numar_vechi);
 }
 
-void Liars_Dice::Joaca_Joc() {
-    const int dif = Set_Dificultate();
-
-    std::vector<Player_Dice*> jucatori_initiali;
-    for (int i=0;i<=dif;i++) {
+void Liars_Dice::Initializare_Jucatori() {
+    jucatori_initiali.clear();
+    for (int i=0;i<=dificultate;i++) {
         if (auto* dice_player = dynamic_cast<Player_Dice*>(players[i].get())) {
             jucatori_initiali.push_back(dice_player);
         }
     }
+}
+
+void Liars_Dice::Ruleaza_Joc() {
+    // const int dif = Set_Dificultate();
+    //
+    // std::vector<Player_Dice*> jucatori_initiali;
+    // for (int i=0;i<=dif;i++) {
+    //     if (auto* dice_player = dynamic_cast<Player_Dice*>(players[i].get())) {
+    //         jucatori_initiali.push_back(dice_player);
+    //     }
+    // }
+    static const std::string eu="Marius";
 
     while (true) {
         std::vector<Player_Dice*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali);
 
         size_t idx = 0;
 
+
         if (jucatori_la_masa.size() == 1) {
-            if (jucatori_la_masa[0]->Get_Nume()=="Marius") std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
+            if (jucatori_la_masa[0]->Get_Nume()==eu) std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
             else std::cout<<std::endl<<"Din pacate ai murit...🕊️💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;
         }
@@ -146,8 +157,8 @@ void Liars_Dice::Joaca_Joc() {
                     std::cout<<"Valoarea zarurilor: ";
                     std::cin>>noua_valoare;
 
-                    int nr_curent = std::stoi(numar);
-                    int val_curenta = std::stoi(valoare);
+                    const int nr_curent = std::stoi(numar);
+                    const int val_curenta = std::stoi(valoare);
 
                     if (!Licitatie_Valida(val_curenta, nr_curent, noua_valoare, nou_numar)) {
                         std::cout << "\nLicitatie invalida! Trebuie sa cresti numarul de zaruri sau valoarea acestora.\n";
