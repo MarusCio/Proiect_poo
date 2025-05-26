@@ -127,7 +127,9 @@ conțin fișiere generate și nu ne ajută să le versionăm.
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
   - [OpenAL](https://openal-soft.org/) (LGPL): din cauza licenței, trebuie distribuită ca shared library
 - [dexonline](https://dexonline.ro/definitie/opac/definitii) 
-- [Template Method](https://www.geeksforgeeks.org/template-method-design-pattern/),(https://refactoring.guru/design-patterns/template-method/cpp/example)
+- [Template Method](https://www.geeksforgeeks.org/template-method-design-pattern/)
+- [Template Method](https://refactoring.guru/design-patterns/template-method/cpp/example)
+- [Abstract Factory](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns/Creational_Patterns#Factory)
 - adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
 
 

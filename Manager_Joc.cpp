@@ -4,17 +4,23 @@
 
 #include "Manager_Joc.h"
 
-void Manager_Joc::Incepe_Joc(const int mod) {
+#include "Liars_Deck_Factory.h"
+#include "Liars_Dice_Factory.h"
 
-    if (mod==1) {
-        Pachet_Carti pachet;
-        pachet.Amesteca_Pachet();
-        joc_crt = std::make_unique<Liars_Deck>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, pachet);
-    }
-    else {
-        Zaruri zaruri;
-        joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
-    }
+void Manager_Joc::Incepe_Joc(const std::unique_ptr<Joc_Factory>& f) {
+
+    // if (mod==1) {
+    //     Pachet_Carti pachet;
+    //     pachet.Amesteca_Pachet();
+    //     joc_crt = std::make_unique<Liars_Deck>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, pachet);
+    // }
+    // else {
+    //     Zaruri zaruri;
+    //     joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
+    // }
+    // joc_crt->Joaca_Joc_Template_Method();
+
+    joc_crt=f->Creaza_joc();
     joc_crt->Joaca_Joc_Template_Method();
 
     jocuri_jucate.emplace_back(joc_crt->clone());
@@ -51,16 +57,18 @@ void Manager_Joc::Avertismente(const int x) {
 
 void Manager_Joc::Porneste_Joc() {
     srand(time(nullptr));
-    int mod_de_joc;
+    std::string mod_de_joc;
     bool verificare=false;
+    std::unique_ptr<Joc_Factory> factory;
+
 
     std::cout<<"\n----------- Privet! -----------\n";
     Afis_Moduri();
     std::cin>>mod_de_joc;
 
     int eroare=0;
-    while (mod_de_joc!=1 && mod_de_joc!=2) {
-        if (eroare==3) {mod_de_joc=1; break;}
+    while (mod_de_joc!="1" && mod_de_joc!="2") {
+        if (eroare==3) {mod_de_joc="1"; break;}
 
         Avertismente(eroare);
         std::cin>>mod_de_joc;
@@ -70,30 +78,38 @@ void Manager_Joc::Porneste_Joc() {
     std::cout<<std::endl;
 
     try {
-        Incepe_Joc(mod_de_joc);
+        // Incepe_Joc(mod_de_joc);
+        if (mod_de_joc=="1") factory = std::make_unique<Liars_Deck_Factory>();
+        else factory = std::make_unique<Liars_Dice_Factory>();
+
+        Incepe_Joc(factory);
 
         eroare=0;
         std::string joc_nou;
         std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
         std::cin>>joc_nou;
 
-        int mod_de_joc_nou;
+        std::string mod_de_joc_nou;
         while (joc_nou == "da") {
             std::cout<<std::endl;
 
             Afis_Moduri();
             std::cin>>mod_de_joc_nou;
 
-            while (mod_de_joc_nou!=1 && mod_de_joc_nou!=2) {
+            while (mod_de_joc_nou!="1" && mod_de_joc_nou!="2") {
 
-                if (eroare==3) {mod_de_joc_nou=1; break;}
+                if (eroare==3) {mod_de_joc_nou="1"; break;}
                 Avertismente(eroare);
                 std::cin>>mod_de_joc_nou;
 
                 eroare++;
             }
 
-            Incepe_Joc(mod_de_joc_nou);
+            // Incepe_Joc(mod_de_joc_nou);
+            if (mod_de_joc_nou=="1") factory = std::make_unique<Liars_Deck_Factory>();
+            else factory = std::make_unique<Liars_Dice_Factory>();
+
+            Incepe_Joc(factory);
 
             std::cout<<std::endl;
             std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";

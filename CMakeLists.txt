@@ -81,6 +81,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Player_Dice.h
         Manager_Joc.cpp
         Manager_Joc.h
+        Joc_Factory.cpp
+        Joc_Factory.h
+        Liars_Deck_Factory.cpp
+        Liars_Deck_Factory.h
+        Liars_Dice_Factory.cpp
+        Liars_Dice_Factory.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
