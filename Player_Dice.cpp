@@ -40,3 +40,7 @@ int Player_Dice::Get_Shot() const {
 }
 
 bool Player_Dice::Alive() const { return shot<2; }
+
+std::unique_ptr<Player> Player_Dice::clone() const {
+    return std::make_unique<Player_Dice>(*this);
+}

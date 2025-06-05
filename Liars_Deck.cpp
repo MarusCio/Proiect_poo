@@ -10,16 +10,18 @@
 
 Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti &pachet): Joc(nume_jucatori.size()), carti(pachet) {
     for (const auto& nume : nume_jucatori) {
-        players.emplace_back(std::make_unique<Player_Deck>(nume,pachet,0));
+        jucatori_initiali.emplace_back(std::make_unique<Player_Deck>(nume,pachet,0));
     }
 }
 
-Liars_Deck::Liars_Deck(const Liars_Deck &x): Joc(x.dificultate), table {x.table}, carti {x.carti} {}
+Liars_Deck::Liars_Deck(const Liars_Deck &x): Joc(x.dificultate), table{x.table}, carti{x.carti} {}
 
 Liars_Deck & Liars_Deck::operator=(const Liars_Deck &x) {
-    this->dificultate=x.dificultate;
-    this->table=x.table;
-    this->carti=x.carti;
+    if (this != &x) {
+        this->dificultate = x.dificultate;
+        this->table = x.table;
+        this->carti = x.carti;
+    }
     return *this;
 }
 
@@ -30,7 +32,7 @@ std::unique_ptr<Joc> Liars_Deck::clone() const {
     return std::make_unique<Liars_Deck>(*this);
 }
 
-void Liars_Deck::Reset_Revolver(const std::vector<Player_Deck *> &players_) {
+void Liars_Deck::Reset_Revolver(const std::vector<std::unique_ptr<Player_Deck>> &players_) {
     for (const auto& player : players_)
         player->Invarte_Revolver(rand() % 6 + 1);
 }
@@ -75,14 +77,16 @@ bool Liars_Deck::Minte(Player_Deck &jucator_crt, Player_Deck &adversar, const Ta
     return false;
 }
 
-std::vector<Player_Deck *> Liars_Deck::Jucatori_Activi(std::vector<Player_Deck *> &jucatori_initiali,
-    Pachet_Carti &carti_) {
+std::vector<Player_Deck *> Liars_Deck::Jucatori_Activi(
+    const std::vector<std::unique_ptr<Player_Deck>> &jucatori_initiali, Pachet_Carti &carti_, const int dif) {
     std::vector<Player_Deck*> activi;
 
-    for (auto& jucator : jucatori_initiali) {
+    // std::cout<<dif<<" ";
+    for (int i=0;i<=dif;i++) {
+        auto& jucator = jucatori_initiali[i];
         if (jucator->Alive()) {
             jucator->Reset_Carti(carti_);
-            activi.push_back(jucator);
+            activi.push_back(jucator.get());
         }
     }
 
@@ -90,12 +94,10 @@ std::vector<Player_Deck *> Liars_Deck::Jucatori_Activi(std::vector<Player_Deck *
 }
 
 void Liars_Deck::Initializare_Jucatori() {
-    jucatori_initiali.clear();
-    for (int i=0;i<=dificultate;i++) {
-        if (auto* deck_player = dynamic_cast<Player_Deck*>(players[i].get())) {
-            jucatori_initiali.push_back(deck_player);
-        }
-    }
+    // for (int i=0;i<=dificultate;i++) {
+    //     // std::cout<<jucatori_initiali[i]->Get_Nume()<<": ";
+    //     // jucatori_initiali[i]->Reset_Carti(carti);
+    // }
     Reset_Revolver(jucatori_initiali);
 }
 
@@ -105,7 +107,7 @@ void Liars_Deck::Ruleaza_Joc() {
     static const std::string eu="Marius";
 
     // std::vector<Player_Deck*> jucatori_initiali;
-    // for (int i=0;i<=dif;i++) {
+    // for (int i=0;i<=dificultate;i++) {
     //     if (auto* deck_player = dynamic_cast<Player_Deck*>(players[i].get())) {
     //         jucatori_initiali.push_back(deck_player);
     //     }
@@ -117,11 +119,17 @@ void Liars_Deck::Ruleaza_Joc() {
 
 
     while (final_joc) {
-        std::vector<Player_Deck*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali, carti);
+        std::vector<Player_Deck*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali, carti,dificultate);
+
+        // for (const auto* jucator : jucatori_la_masa) {
+        //     std::cout << jucator->Get_Nume() << " ";
+        // }
 
         if (jucatori_la_masa.size() == 1) {
+            Player *castigator=jucatori_la_masa[0];
+            Set_Castigator(castigator);
             if (jucatori_la_masa[0]->Get_Nume()==eu) std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
-            else std::cout<<std::endl<<"Din pacate ai murit...🕊️💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
+            else std::cout<<std::endl<<"Din pacate ai murit...🕊💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;
         }
 
@@ -212,17 +220,15 @@ void Liars_Deck::Ruleaza_Joc() {
 int Liars_Deck::Get_Lungime_Max() const {
     int lungime_max = 0;
     for (int i = 0; i <= dificultate; ++i) {
-        const auto& player = players[i];
-        if (const auto* p=dynamic_cast<Player_Deck*>(player.get())) {
-            if (p->Alive() && !p->Fara_Carti()) {
-                lungime_max = std::max(lungime_max, static_cast<int>(p->Get_Nume().length()));
-            }
+        const auto& player = jucatori_initiali[i];
+        if (player->Alive() && !player->Fara_Carti()) {
+            lungime_max = std::max(lungime_max, static_cast<int>(player->Get_Nume().length()));
         }
     }
     return lungime_max;
 }
 
-std::ostream& operator<<(std::ostream& os, const Liars_Deck& joc) {
+std::ostream & operator<<(std::ostream &os, const Liars_Deck &joc) {
     os<<std::endl<<"---------------------"<<std::endl;
     os << joc.table << std::endl;
 
@@ -231,7 +237,7 @@ std::ostream& operator<<(std::ostream& os, const Liars_Deck& joc) {
 
     for (int i = 0; i <= joc.dificultate; ++i) {
         // const Player* player = joc.players[i].get();
-        const auto* player_deck = dynamic_cast<const Player_Deck*>(joc.players[i].get());
+        const auto* player_deck = joc.jucatori_initiali[i].get();
         if (player_deck->Alive() && !player_deck->Fara_Carti()) {
             os << player_deck->Get_Padding(max_nume_length)<<" | Glont: "<<player_deck->Get_Sansa()<<"/6 | Mana: ";
 

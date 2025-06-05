@@ -40,4 +40,12 @@ int Joc::Set_Dificultate() {
     return dificultate;
 }
 
+void Joc::Set_Castigator(Player *j) {
+    castigator = j;
+}
+
+Player * Joc::Get_Castigator() const {
+    return castigator;
+}
+
 

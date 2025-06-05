@@ -15,15 +15,17 @@
 class Manager_Joc {
     std::unique_ptr<Joc> joc_crt;
     std::vector<std::unique_ptr<Joc>> jocuri_jucate;
+    std::vector<std::unique_ptr<Player>> castigatori;
 
-    void Incepe_Joc(const std::unique_ptr<Joc_Factory>& f);
-    void Afiseaza_Istoric() const;
+    void Incepe_Joc(int mod);
     static void Afis_Moduri();
     static void Avertismente(int x);
+    void Afiseaza_Istoric() const;
 
 public:
     void Porneste_Joc();
 };
+
 
 
 

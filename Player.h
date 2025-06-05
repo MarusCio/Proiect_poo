@@ -5,6 +5,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <memory>
+
 #include "Pachet_Carti.h"
 #include "Zaruri.h"
 
@@ -40,7 +42,10 @@ public:
 
     [[nodiscard]] virtual bool Alive() const=0;
 
-    [[nodiscard]] std::string Get_Padding(const size_t lungime) const;
+    [[nodiscard]] std::string Get_Padding(size_t lungime) const;
+
+    virtual std::unique_ptr<Player> clone() const =0;
+
 
     friend std::ostream& operator<<(std::ostream& os,const Player& player);
 };

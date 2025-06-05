@@ -124,3 +124,7 @@ int Player_Deck::Get_Sansa() const {
 bool Player_Deck::Fara_Carti() const {
     return mana.empty();
 }
+
+std::unique_ptr<Player> Player_Deck::clone() const {
+    return std::make_unique<Player_Deck>(*this);
+}

@@ -21,6 +21,7 @@ public:
     void Bea_Shot();
     [[nodiscard]] int Get_Shot() const;
     [[nodiscard]] bool Alive() const override;
+    [[nodiscard]] std::unique_ptr<Player> clone() const override;
 };
 
 

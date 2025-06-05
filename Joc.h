@@ -19,8 +19,8 @@ public:
     }
 protected:
     int dificultate;
-    std::vector<std::unique_ptr<Player>> players;
-
+    // std::vector<std::unique_ptr<Player>> players;
+    Player* castigator;
 
 public:
     Joc();
@@ -34,6 +34,8 @@ public:
     virtual void Initializare_Jucatori()=0;
     [[nodiscard]] virtual std::string Get_Nume_Joc() const = 0;
     [[nodiscard]] virtual int Get_Lungime_Max() const = 0;
+    void Set_Castigator(Player* j);
+    [[nodiscard]] Player* Get_Castigator() const;
 };
 
 

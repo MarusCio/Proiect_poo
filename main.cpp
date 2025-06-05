@@ -1,13 +1,7 @@
 #include <iostream>
-#include <memory>
-#include <vector>
-#include <random>
 
-#include "Exceptii_Joc.h"
-#include "Liars_Deck.h"
-#include "Liars_Dice.h"
 #include "Manager_Joc.h"
-#include "Pachet_Carti.h"
+
 
 
 // #include "cmake-build-debug/_deps/sfml-src/src/SFML/Window/CursorImpl.hpp"

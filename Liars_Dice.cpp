@@ -6,10 +6,10 @@
 #include "Exceptii_Joc.h"
 #include <algorithm>
 
-Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size()), zaruri(mana_zaruri) {
 
+Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size()), zaruri(mana_zaruri) {
     for (const auto& nume : nume_jucatori_) {
-        players.emplace_back(std::make_unique<Player_Dice>(nume,mana_zaruri));
+        jucatori_initiali.emplace_back(std::make_unique<Player_Dice>(nume,mana_zaruri));
     }
 }
 
@@ -21,19 +21,22 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
     return *this;
 }
 
-Liars_Dice::~Liars_Dice() = default;
+Liars_Dice::~Liars_Dice() {
+}
 
 std::unique_ptr<Joc> Liars_Dice::clone() const {
     return std::make_unique<Liars_Dice>(*this);
 }
 
-std::vector<Player_Dice *> Liars_Dice::Jucatori_Activi(std::vector<Player_Dice *> &jucatori_initiali) {
+std::vector<Player_Dice *> Liars_Dice::Jucatori_Activi(
+    const std::vector<std::unique_ptr<Player_Dice>> &jucatori_initiali, const int dif) {
     std::vector<Player_Dice*> activi;
 
-    for (auto& jucator : jucatori_initiali) {
+    for (auto i=0;i<=dif;i++) {
+        auto& jucator = jucatori_initiali[i];
         if (jucator->Alive()) {
             jucator->Reset_Zaruri();
-            activi.push_back(jucator);
+            activi.push_back(jucator.get());
         }
     }
     return activi;
@@ -50,17 +53,15 @@ bool Liars_Dice::Licitatie_Valida(const int valoare_veche, const int numar_vechi
 }
 
 void Liars_Dice::Initializare_Jucatori() {
-    jucatori_initiali.clear();
     for (int i=0;i<=dificultate;i++) {
-        if (auto* dice_player = dynamic_cast<Player_Dice*>(players[i].get())) {
-            jucatori_initiali.push_back(dice_player);
-        }
+        // std::cout<<jucatori_initiali[i]->Get_Nume()<<": ";
+        jucatori_initiali[i]->Reset_Zaruri();
     }
 }
 
 void Liars_Dice::Ruleaza_Joc() {
     // const int dif = Set_Dificultate();
-    //
+
     // std::vector<Player_Dice*> jucatori_initiali;
     // for (int i=0;i<=dif;i++) {
     //     if (auto* dice_player = dynamic_cast<Player_Dice*>(players[i].get())) {
@@ -70,14 +71,20 @@ void Liars_Dice::Ruleaza_Joc() {
     static const std::string eu="Marius";
 
     while (true) {
-        std::vector<Player_Dice*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali);
+        std::vector<Player_Dice*> jucatori_la_masa =Jucatori_Activi(jucatori_initiali,dificultate);
+
+        // for (const auto* jucator : jucatori_la_masa) {
+        //     std::cout << jucator->Get_Nume() << " ";
+        // }
 
         size_t idx = 0;
 
 
         if (jucatori_la_masa.size() == 1) {
+            Player *castigator=jucatori_la_masa[0];
+            Set_Castigator(castigator);
             if (jucatori_la_masa[0]->Get_Nume()==eu) std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
-            else std::cout<<std::endl<<"Din pacate ai murit...🕊️💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
+            else std::cout<<std::endl<<"Din pacate ai murit...🕊💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;
         }
 
@@ -210,24 +217,22 @@ std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE";}
 int Liars_Dice::Get_Lungime_Max() const {
     int lungime_max = 0;
     for (int i = 0; i <= dificultate; ++i) {
-        const auto& player = players[i];
-        if (const auto* p=dynamic_cast<Player_Dice*>(player.get())) {
-            if (p->Alive()) {
-                lungime_max = std::max(lungime_max, static_cast<int>(p->Get_Nume().length()));
-            }
+        const auto& player = jucatori_initiali[i];
+        if (player->Alive()) {
+            lungime_max = std::max(lungime_max, static_cast<int>(player->Get_Nume().length()));
         }
     }
     return lungime_max;
 }
 
-std::ostream& operator<<(std::ostream& os, const Liars_Dice& joc) {
+std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
     os<<std::endl<<"---------------------"<<std::endl;
 
     const size_t max_nume_length = joc.Get_Lungime_Max();
 
     for (int i = 0; i <= joc.dificultate; ++i) {
         // const Player& player = joc.players[i];
-        const auto* player_dice = dynamic_cast<const Player_Dice*>(joc.players[i].get());
+        const auto* player_dice = joc.jucatori_initiali[i].get();
         if (player_dice->Alive()) {
             os << player_dice->Get_Padding(max_nume_length)<<" | Shot-uri: "<<player_dice->Get_Shot()<<"/2 | Zaruri: ";
 
@@ -240,4 +245,3 @@ std::ostream& operator<<(std::ostream& os, const Liars_Dice& joc) {
     os << "---------------------" << std::endl;
     return os;
 }
-

@@ -13,10 +13,7 @@
 
 class Liars_Dice_Factory:public Joc_Factory{
 public:
-    std::unique_ptr<Joc> Creaza_joc() override {
-        Zaruri zaruri;
-        return std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"} ,zaruri);
-    }
+    std::unique_ptr<Joc> Creaza_joc() override;
 };
 
 

@@ -24,7 +24,7 @@ public:
     ~Player_Deck() override;
 
     [[nodiscard]] const std::vector<int>& Get_Carti_Alese() const;
-    void Index_Pt_Carti(const int nr, std::vector<int>& indecsi) const;
+    void Index_Pt_Carti(int nr, std::vector<int>& indecsi) const;
     void Mana_Ramasa(std::vector<int> indecsi);
     bool Alege_Carti();
     [[nodiscard]] bool Alive() const override;
@@ -33,6 +33,7 @@ public:
     void Creste_Sansa_Glont();
     [[nodiscard]] int Get_Sansa() const;
     [[nodiscard]] bool Fara_Carti() const;
+    [[nodiscard]] std::unique_ptr<Player> clone() const override;
 };
 
 

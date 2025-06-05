@@ -18,8 +18,7 @@
 class Liars_Dice: public Joc {
     //std::vector<Player> players;
     Zaruri zaruri;
-    std::vector<Player_Dice*> jucatori_initiali;
-
+    std::vector<std::unique_ptr<Player_Dice>> jucatori_initiali;
 
 public:
     Liars_Dice(const std::vector<std::string>& nume_jucatori_, Zaruri& mana_zaruri);
@@ -32,16 +31,17 @@ public:
     //     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
     // }
 
-    static std::vector<Player_Dice*> Jucatori_Activi(std::vector<Player_Dice*>& jucatori_initiali);
-    static bool Licitatie_Valida(int valoare_veche,int numar_vechi,int valoare_noua,int numar_nou);
+    static std::vector<Player_Dice*> Jucatori_Activi(const std::vector<std::unique_ptr<Player_Dice>>& jucatori_initiali, int dif);
+    static bool Licitatie_Valida(int valoare_veche, int numar_vechi, int valoare_noua, int numar_nou);
     void Initializare_Jucatori() override;
-
     void Ruleaza_Joc() override;
     [[nodiscard]] std::string Get_Nume_Joc() const override;
     [[nodiscard]] int Get_Lungime_Max() const override;
+
     friend std::ostream& operator<<(std::ostream& os, const Liars_Dice& joc);
 };
 
+std::ostream& operator<<(std::ostream& os, const Liars_Dice& joc);
 
 
 #endif //LIARS_DICE_H

@@ -3,3 +3,5 @@
 //
 
 #include "Joc_Factory.h"
+
+Joc_Factory::~Joc_Factory() = default;

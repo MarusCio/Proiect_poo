@@ -12,7 +12,7 @@
 class Joc_Factory {
 public:
     virtual std::unique_ptr<Joc> Creaza_joc()=0;
-    virtual ~Joc_Factory()= default;
+    virtual ~Joc_Factory();
 };
 
 
