@@ -104,14 +104,14 @@ void Manager_Joc::Porneste_Joc() {
         std::cout<<std::endl<<"Vrei sa joci din nou? Scrie da pentru a continua:";
         std::cin>>joc_nou;
 
-        std::string mod_de_joc_nou;
+
         while (joc_nou == "da") {
             std::cout<<std::endl;
 
             Afis_Moduri();
-            mod_de_joc_nou=Alege_Mod();
+            mod_de_joc=Alege_Mod();
 
-            factory=Creaza_Factory(mod_de_joc_nou);
+            factory=Creaza_Factory(mod_de_joc);
 
             Incepe_Joc(factory);
 

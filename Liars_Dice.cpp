@@ -21,8 +21,7 @@ Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
     return *this;
 }
 
-Liars_Dice::~Liars_Dice() {
-}
+Liars_Dice::~Liars_Dice() = default;
 
 std::unique_ptr<Joc> Liars_Dice::clone() const {
     return std::make_unique<Liars_Dice>(*this);
@@ -81,8 +80,8 @@ void Liars_Dice::Ruleaza_Joc() {
 
 
         if (jucatori_la_masa.size() == 1) {
-            Player *castigator=jucatori_la_masa[0];
-            Set_Castigator(castigator);
+            Player *castigator_joc=jucatori_la_masa[0];
+            Set_Castigator(castigator_joc);
             if (jucatori_la_masa[0]->Get_Nume()==eu) std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
             else std::cout<<std::endl<<"Din pacate ai murit...🕊💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;

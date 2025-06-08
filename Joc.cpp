@@ -7,11 +7,11 @@
 #include "Exceptii_Joc.h"
 
 
-Joc::Joc(): dificultate(0) {}
+Joc::Joc(): dificultate(0),castigator(nullptr) {}
 
 Joc::Joc(const int dif,Player* castigator_): dificultate(dif),castigator(castigator_) {}
 
-Joc::~Joc() {}
+Joc::~Joc() =default;
 
 int Joc::Set_Dificultate() {
     int nr_playeri;

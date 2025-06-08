@@ -25,8 +25,7 @@ Liars_Deck & Liars_Deck::operator=(const Liars_Deck &x) {
     return *this;
 }
 
-Liars_Deck::~Liars_Deck() {
-}
+Liars_Deck::~Liars_Deck() = default;
 
 std::unique_ptr<Joc> Liars_Deck::clone() const {
     return std::make_unique<Liars_Deck>(*this);
@@ -126,8 +125,8 @@ void Liars_Deck::Ruleaza_Joc() {
         // }
 
         if (jucatori_la_masa.size() == 1) {
-            Player *castigator=jucatori_la_masa[0];
-            Set_Castigator(castigator);
+            Player *castigator_joc=jucatori_la_masa[0];
+            Set_Castigator(castigator_joc);
             if (jucatori_la_masa[0]->Get_Nume()==eu) std::cout<<std::endl<<"Felicitari!🥂 Ai reusit sa bati rusii la jocul lor!"<<std::endl;
             else std::cout<<std::endl<<"Din pacate ai murit...🕊💔😢😭"<<std::endl<<"Data viitoare nu mai intra in baruri dubioase din Rusia!"<<std::endl;
             break;
