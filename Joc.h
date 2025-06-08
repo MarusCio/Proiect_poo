@@ -24,7 +24,7 @@ protected:
 
 public:
     Joc();
-    Joc(int dif);
+    Joc(int dif,Player* castigator_);
     virtual ~Joc();
 
     [[nodiscard]] virtual std::unique_ptr<Joc> clone() const = 0;

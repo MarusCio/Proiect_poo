@@ -8,13 +8,13 @@
 #include <algorithm>
 
 
-Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti &pachet): Joc(nume_jucatori.size()), carti(pachet) {
+Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti &pachet): Joc(nume_jucatori.size(),nullptr), carti(pachet) {
     for (const auto& nume : nume_jucatori) {
         jucatori_initiali.emplace_back(std::make_unique<Player_Deck>(nume,pachet,0));
     }
 }
 
-Liars_Deck::Liars_Deck(const Liars_Deck &x): Joc(x.dificultate), table{x.table}, carti{x.carti} {}
+Liars_Deck::Liars_Deck(const Liars_Deck &x): Joc(x.dificultate,x.castigator), table{x.table}, carti{x.carti} {}
 
 Liars_Deck & Liars_Deck::operator=(const Liars_Deck &x) {
     if (this != &x) {

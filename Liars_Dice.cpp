@@ -7,13 +7,13 @@
 #include <algorithm>
 
 
-Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size()), zaruri(mana_zaruri) {
+Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size(),nullptr), zaruri(mana_zaruri) {
     for (const auto& nume : nume_jucatori_) {
         jucatori_initiali.emplace_back(std::make_unique<Player_Dice>(nume,mana_zaruri));
     }
 }
 
-Liars_Dice::Liars_Dice(const Liars_Dice &x): Joc(x.dificultate), zaruri{x.zaruri} {}
+Liars_Dice::Liars_Dice(const Liars_Dice &x): Joc(x.dificultate,x.castigator), zaruri{x.zaruri} {}
 
 Liars_Dice & Liars_Dice::operator=(const Liars_Dice &x_) {
 

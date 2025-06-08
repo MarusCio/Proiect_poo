@@ -9,7 +9,7 @@
 
 Joc::Joc(): dificultate(0) {}
 
-Joc::Joc(int dif): dificultate(dif) {}
+Joc::Joc(const int dif,Player* castigator_): dificultate(dif),castigator(castigator_) {}
 
 Joc::~Joc() {}
 
