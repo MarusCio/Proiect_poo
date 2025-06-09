@@ -38,6 +38,7 @@ std::vector<Player_Dice *> Liars_Dice::Jucatori_Activi(
             activi.push_back(jucator.get());
         }
     }
+
     return activi;
 }
 
