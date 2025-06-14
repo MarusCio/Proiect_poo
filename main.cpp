@@ -12,8 +12,8 @@
 
 int main() {
 
-    Manager_Joc manager_joc;
-    manager_joc.Porneste_Joc();
+    // Manager_Joc* manager_joc;
+    Manager_Joc::Get_Instanta()->Porneste_Joc();
 }
 
 

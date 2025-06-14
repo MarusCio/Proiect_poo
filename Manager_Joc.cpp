@@ -8,6 +8,8 @@
 #include "Liars_Dice_Factory.h"
 
 
+Manager_Joc::Manager_Joc() = default;
+
 void Manager_Joc::Incepe_Joc(const std::unique_ptr<Joc_Factory> &f) {
 
     // if (mod==1) {
@@ -150,3 +152,11 @@ void Manager_Joc::Porneste_Joc() {
     Afiseaza_Istoric();
 }
 
+Manager_Joc* Manager_Joc::instanta=nullptr;
+
+Manager_Joc* Manager_Joc::Get_Instanta() {
+    if (!instanta) {
+        instanta=new Manager_Joc();
+    }
+    return instanta;
+}

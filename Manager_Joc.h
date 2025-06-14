@@ -19,6 +19,7 @@ class Manager_Joc {
     std::vector<std::unique_ptr<Joc>> jocuri_jucate;
     std::vector<std::unique_ptr<Player>> castigatori;
 
+    Manager_Joc();
     void Incepe_Joc(const std::unique_ptr<Joc_Factory>& f);
     static void Afis_Moduri();
     static void Avertismente(int x);
@@ -26,12 +27,15 @@ class Manager_Joc {
     static std::unique_ptr<Joc_Factory> Creaza_Factory(const std::string& mod);
     void Afiseaza_Istoric() const;
 
+protected:
+    static Manager_Joc* instanta;
+
 public:
+    Manager_Joc(Manager_Joc &m) =delete;
+    void operator=(const Manager_Joc &) = delete;
+    static Manager_Joc *Get_Instanta();
     void Porneste_Joc();
 };
-
-
-
 
 
 #endif //MANAGER_JOC_H
