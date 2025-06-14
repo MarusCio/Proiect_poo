@@ -6,7 +6,7 @@ Rușii par să fie drăguți cu tine, așa că te lasă să alegi jocul și cu c
 
 
 ## ⚔️Instrucțiuni (**nimeni nu citește instrucțiuni, dar aici te joci cu viața ta...☠️**)
-Alege unul din cele 2 jocuri, altfel nu te vad bine...⚰️:
+Alege unul din cele 3 jocuri, altfel nu te vad bine...⚰️:
 
 1️⃣ **Liar's Deck** 🃏
 
@@ -25,6 +25,10 @@ Jocul se desfășoară în runde, în care jucătorii fac pariuri progresive des
 **Fiecare jucător are**:
 - Cinci zaruri acoperite de un paharar **[opac](#dicționar)** 🥤
 - Două **shot-uri** de **Spirytus Rektyfikowany 🍷** o vodkă **[puternic dezvoltată](#dicționar)** 💪 care sperie chiar și rușii, având doar **96% ABV**
+
+- Modul are 2 variante de joc
+  - Liar's Dice Clasic: zarurile cu valoarea 1 sunt universale (se numără ca fiind orice altă valoare);
+  - Liar's Dice Tradițional: fiecare valoare a zarurilor este unică (1 nu se numară ca fiind zar de orice valoare).
 
 
 
