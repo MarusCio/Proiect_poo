@@ -6,6 +6,7 @@
 
 #include "Liars_Deck_Factory.h"
 #include "Liars_Dice_Factory.h"
+#include "Liars_Dice_Traditional_Factory.h"
 
 
 Manager_Joc::Manager_Joc() = default;
@@ -33,7 +34,8 @@ void Manager_Joc::Incepe_Joc(const std::unique_ptr<Joc_Factory> &f) {
 void Manager_Joc::Afis_Moduri() {
     std::cout<<"Alege un mod de joc:\n";
     std::cout<<"1) --> LIAR'S DECK 🃏\n";
-    std::cout<<"2) --> LIAR'S DICE 🎲\n";
+    std::cout<<"2) --> LIAR'S DICE CLASIC 🎲\n";
+    std::cout<<"3) --> LIAR'S DICE TRADITIONAL 🎲\n";
     std::cout<<"Mod de joc: ";
 }
 
@@ -43,7 +45,7 @@ void Manager_Joc::Avertismente(const int x) {
         std::cout<<"⚠ Trebuie sa alegi unul dintre modurile de joc ⚠\n";
     }
     else if (x==1) {
-        std::cout<<"⚠⚠ TREBUIE SA SCRII 1 SAU 2! ⚠⚠\n";
+        std::cout<<"⚠⚠ TREBUIE SA SCRII 1, 2 sau 3! ⚠⚠\n";
     }
     else if (x==2) {
         std::cout<<"⚠⚠⚠ Daca mai faci asta inca o data, Dimitri se va autosesiza si va alege el pentru tine... ⚠⚠⚠\n";
@@ -56,7 +58,7 @@ std::string Manager_Joc::Alege_Mod() {
     std::cin>>mod_de_joc;
 
     int eroare=0;
-    while (mod_de_joc!="1" && mod_de_joc!="2") {
+    while (mod_de_joc!="1" && mod_de_joc!="2" && mod_de_joc!="3") {
         if (eroare==3) {mod_de_joc="1"; break;}
 
         Avertismente(eroare);
@@ -71,7 +73,8 @@ std::string Manager_Joc::Alege_Mod() {
 
 std::unique_ptr<Joc_Factory> Manager_Joc::Creaza_Factory(const std::string &mod) {
     if (mod=="1") return std::make_unique<Liars_Deck_Factory>();
-    return std::make_unique<Liars_Dice_Factory>();
+    if (mod=="2") return std::make_unique<Liars_Dice_Factory>();
+    return std::make_unique<Liars_Dice_Traditional_Factory>();
 }
 
 void Manager_Joc::Afiseaza_Istoric() const {

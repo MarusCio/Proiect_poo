@@ -16,6 +16,7 @@
 
 
 class Liars_Dice: public Joc {
+protected:
     //std::vector<Player> players;
     Zaruri zaruri;
     std::vector<std::unique_ptr<Player_Dice>> jucatori_initiali;
@@ -34,6 +35,7 @@ public:
     static std::vector<Player_Dice*> Jucatori_Activi(const std::vector<std::unique_ptr<Player_Dice>>& jucatori_initiali, int dif);
     static bool Licitatie_Valida(int valoare_veche, int numar_vechi, int valoare_noua, int numar_nou);
     void Initializare_Jucatori() override;
+    virtual int Get_Numar_Zaruri_Egale(const Player_Dice* p, const std::string& val) const;
     void Ruleaza_Joc() override;
     [[nodiscard]] std::string Get_Nume_Joc() const override;
     [[nodiscard]] int Get_Lungime_Max() const override;

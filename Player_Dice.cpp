@@ -27,6 +27,14 @@ int Player_Dice::Numar_Zaruri_Egale(const std::string &valoare) const {
     return count;
 }
 
+int Player_Dice::Numar_Zaruri_Egale_Traditional(const std::string &valoare) const {
+    int count = 0;
+    for (const std::string& z : mana)
+        if (z == valoare)
+            ++count;
+    return count;
+}
+
 void Player_Dice::Reset_Zaruri() {
     mana=Zaruri::Extrage_Mana();
 }

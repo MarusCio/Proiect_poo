@@ -59,6 +59,10 @@ void Liars_Dice::Initializare_Jucatori() {
     }
 }
 
+int Liars_Dice::Get_Numar_Zaruri_Egale(const Player_Dice *p, const std::string &val) const {
+    return p->Numar_Zaruri_Egale(val);
+}
+
 void Liars_Dice::Ruleaza_Joc() {
     // const int dif = Set_Dificultate();
 
@@ -137,7 +141,7 @@ void Liars_Dice::Ruleaza_Joc() {
                 if (comanda == "spot") {
                     int total = 0;
                     for (const auto* p : jucatori_la_masa)
-                        total += p->Numar_Zaruri_Egale(valoare);
+                        total += Get_Numar_Zaruri_Egale(p,valoare);
 
                     std::cout << "Verificare SPOT ON (necesar: " << numar << ", total: " << total << ")\n";
 
@@ -212,7 +216,7 @@ void Liars_Dice::Ruleaza_Joc() {
     }
 }
 
-std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE";}
+std::string Liars_Dice::Get_Nume_Joc() const {return "LIAR'S DICE CLASIC";}
 
 int Liars_Dice::Get_Lungime_Max() const {
     int lungime_max = 0;

@@ -87,6 +87,9 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Liars_Deck_Factory.h
         Liars_Dice_Factory.cpp
         Liars_Dice_Factory.h
+        Liars_Dice_Traditional.h
+        Liars_Dice_Traditional.cpp
+        Liars_Dice_Traditional_Factory.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

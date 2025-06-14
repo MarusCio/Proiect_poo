@@ -17,6 +17,7 @@ public:
     ~Player_Dice() override;
 
     [[nodiscard]] int Numar_Zaruri_Egale(const std::string& valoare) const;
+    [[nodiscard]] int Numar_Zaruri_Egale_Traditional(const std::string& valoare) const;
     void Reset_Zaruri();
     void Bea_Shot();
     [[nodiscard]] int Get_Shot() const;
