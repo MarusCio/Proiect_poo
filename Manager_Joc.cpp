@@ -133,10 +133,10 @@ void Manager_Joc::Porneste_Joc() {
         std::cout << "Eroare: " << e.what()<< "\n";
         verificare=true;
     }
-    catch (const Eroare_Declarare_Minciuna& e) {
-        std::cout << "Eroare: " << e.what()<< "\n";
-        verificare=true;
-    }
+    // catch (const Eroare_Declarare_Minciuna& e) {
+    //     std::cout << "Eroare: " << e.what()<< "\n";
+    //     verificare=true;
+    // }
     catch (const Eroare_Inceput_Liars_Dice& e) {
         std::cout << "Eroare: " << e.what()<< "\n";
         verificare=true;
