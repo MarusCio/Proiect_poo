@@ -14,7 +14,7 @@ Joc::Joc(const int dif,Player* castigator_): dificultate(dif),castigator(castiga
 Joc::~Joc() =default;
 
 int Joc::Set_Dificultate() {
-    int nr_playeri;
+    int nr_playeri=1;
     bool ok=false;
     do {
         try {
