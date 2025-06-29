@@ -13,7 +13,7 @@
 
 class Liars_Deck_Factory:public Joc_Factory{
 public:
-    std::unique_ptr<Joc> Creaza_joc() override;
+    std::unique_ptr<Joc> Creeaza_joc() override;
 };
 
 

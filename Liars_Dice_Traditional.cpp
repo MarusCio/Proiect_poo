@@ -10,8 +10,16 @@ std::unique_ptr<Joc> Liars_Dice_Traditional::clone() const {
     return std::make_unique<Liars_Dice_Traditional>(*this);
 }
 
+int Liars_Dice_Traditional::Numar_Zaruri_Egale_Traditional(const std::vector<std::string> &mana, const std::string &valoare) {
+    int count = 0;
+    for (const std::string& z : mana)
+        if (z == valoare)
+            ++count;
+    return count;
+}
+
 int Liars_Dice_Traditional::Get_Numar_Zaruri_Egale(const Player_Dice *p, const std::string &val) const {
-    return p->Numar_Zaruri_Egale_Traditional(val);
+    return Numar_Zaruri_Egale_Traditional(p->Get_Mana(),val);
 }
 
 std::string Liars_Dice_Traditional::Get_Nume_Joc() const {return "LIAR'S DICE TRADITIONAL";}

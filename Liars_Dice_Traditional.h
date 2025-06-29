@@ -13,6 +13,7 @@ public:
     Liars_Dice_Traditional(const std::vector<std::string>& nume_jucatori_, Zaruri& mana_zaruri);
 
     [[nodiscard]] std::unique_ptr<Joc> clone() const override;
+    static int Numar_Zaruri_Egale_Traditional(const std::vector<std::string>& mana, const std::string& valoare);
     int Get_Numar_Zaruri_Egale(const Player_Dice* p, const std::string& val) const override;
     [[nodiscard]] std::string Get_Nume_Joc() const override;
 };

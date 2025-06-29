@@ -4,7 +4,7 @@
 
 #include "Liars_Dice_Traditional_Factory.h"
 
-std::unique_ptr<Joc> Liars_Dice_Traditional_Factory::Creaza_joc() {
+std::unique_ptr<Joc> Liars_Dice_Traditional_Factory::Creeaza_joc() {
     Zaruri zaruri;
     return std::make_unique<Liars_Dice_Traditional>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"} ,zaruri);
 }

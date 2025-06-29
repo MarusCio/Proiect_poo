@@ -22,8 +22,8 @@ void Manager_Joc::Incepe_Joc(const std::unique_ptr<Joc_Factory> &f) {
     //     Zaruri zaruri;
     //     joc_crt = std::make_unique<Liars_Dice>(std::vector<std::string>{"Marius", "Ivan", "Aleksei", "Dimitri"}, zaruri);
     // }
-    joc_crt=f->Creaza_joc();
-    joc_crt->Joaca_Joc_Template_Method();
+    joc_crt=f->Creeaza_joc();
+    joc_crt->Joaca_Joc();
 
     jocuri_jucate.emplace_back(joc_crt->clone());
 
@@ -71,7 +71,7 @@ std::string Manager_Joc::Alege_Mod() {
 
 }
 
-std::unique_ptr<Joc_Factory> Manager_Joc::Creaza_Factory(const std::string &mod) {
+std::unique_ptr<Joc_Factory> Manager_Joc::Creeaza_Factory(const std::string &mod) {
     if (mod=="1") return std::make_unique<Liars_Deck_Factory>();
     if (mod=="2") return std::make_unique<Liars_Dice_Factory>();
     return std::make_unique<Liars_Dice_Traditional_Factory>();
@@ -100,7 +100,7 @@ void Manager_Joc::Porneste_Joc() {
     mod_de_joc=Alege_Mod();
 
     try {
-        factory=Creaza_Factory(mod_de_joc);
+        factory=Creeaza_Factory(mod_de_joc);
 
         Incepe_Joc(factory);
 
@@ -116,7 +116,7 @@ void Manager_Joc::Porneste_Joc() {
             Afis_Moduri();
             mod_de_joc=Alege_Mod();
 
-            factory=Creaza_Factory(mod_de_joc);
+            factory=Creeaza_Factory(mod_de_joc);
 
             Incepe_Joc(factory);
 

@@ -12,7 +12,7 @@
 
 class Joc {
 public:
-    void Joaca_Joc_Template_Method() {
+    void Joaca_Joc() {
         this->Set_Dificultate();
         this->Initializare_Jucatori();
         this->Ruleaza_Joc();

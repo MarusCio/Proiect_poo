@@ -24,7 +24,7 @@ class Manager_Joc {
     static void Afis_Moduri();
     static void Avertismente(int x);
     static std::string Alege_Mod();
-    static std::unique_ptr<Joc_Factory> Creaza_Factory(const std::string& mod);
+    static std::unique_ptr<Joc_Factory> Creeaza_Factory(const std::string& mod);
     void Afiseaza_Istoric() const;
 
 protected:

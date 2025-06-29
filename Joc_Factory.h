@@ -11,7 +11,7 @@
 
 class Joc_Factory {
 public:
-    virtual std::unique_ptr<Joc> Creaza_joc()=0;
+    virtual std::unique_ptr<Joc> Creeaza_joc()=0;
     virtual ~Joc_Factory();
 };
 
