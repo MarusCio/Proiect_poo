@@ -3,6 +3,7 @@
 //
 
 #include "Player_Deck.h"
+#include <limits>
 
 Player_Deck::Player_Deck() = default;
 
@@ -29,18 +30,32 @@ const std::vector<int> & Player_Deck::Get_Carti_Alese() const {
 }
 
 void Player_Deck::Index_Pt_Carti(const int nr, std::vector<int> &indecsi) const {
-    int index;
-    for (int i=0;i<nr;i++) {
-        std::cin>>index;
+    bool ok = false;
 
-        if (index < 1 || index>static_cast<int>(mana.size())) {
-            // std::cout<<"Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1"<<std::endl;
-            // std::cin>>index;
-            throw Eroare_Index_Invalid("Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1\n");
+    do {
+        try {
+            indecsi.clear();
+            int index;
+            if (nr == 1) std::cout << "Indexul cartii este: ";
+            else std::cout << "Indexii celor " << nr << " carti sunt: ";
+
+            for (int i=0;i<nr;i++) {
+                std::cin >> index;
+
+                if (index<1 || index>static_cast<int>(mana.size())) {
+                    // std::cout<<"Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1"<<std::endl;
+                    // std::cin>>index;
+                    throw Eroare_Index_Invalid("Vezi cate carti ai in mana! Numerotarea cartilor incepe de la 1!\n");
+                }
+                indecsi.push_back(index - 1);
+            }
+            ok = true;
+        } catch (const Eroare_Index_Invalid &e) {
+            std::cout << "Eroare: " << e.what() << " Incearca din nou! ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
-
-        indecsi.push_back(index - 1);
-    }
+    } while (!ok);
 }
 
 void Player_Deck::Mana_Ramasa(std::vector<int> indecsi) {

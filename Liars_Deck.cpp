@@ -6,6 +6,7 @@
 #include "Liars_Deck.h"
 #include "Exceptii_Joc.h"
 #include <algorithm>
+#include <limits>
 
 
 Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti &pachet): Joc(nume_jucatori.size(),nullptr), carti(pachet) {
@@ -40,14 +41,21 @@ std::string Liars_Deck::Get_Nume_Joc() const {return "LIAR'S DECK";}
 
 bool Liars_Deck::Minte(Player_Deck &jucator_crt, Player_Deck &adversar, const Table &masa) {
     std::string minciuna;
+    bool ok=false;
 
-    std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
-    std::cin>>minciuna;
+    do {
+        std::cout<<adversar.Get_Nume()<<", daca crezi ca "<<jucator_crt.Get_Nume()<<" minte, scrie 1, altfel scrie 0: ";
+        std::cin>>minciuna;
 
-    if (minciuna!="0" && minciuna!="1") {
-        throw Eroare_Declarare_Minciuna("Poti scrie doar 0 si 1 aici!");
-        // std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;
-    }
+        if (minciuna=="1" || minciuna=="0") {ok=true;}
+        else {
+            std::cout<<"Input invalid! Poti scrie doar 0 si 1 aici!\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            // std::cout<<"poti scrie doar 0 si 1 aici: "; std::cin>>minciuna;
+        }
+
+    }while(!ok);
 
     if (minciuna=="1") {
         std::vector<int> carti_jucator = jucator_crt.Get_Carti_Alese();

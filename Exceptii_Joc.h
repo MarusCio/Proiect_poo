@@ -22,10 +22,10 @@ public:
     explicit Eroare_Index_Invalid(const std::string& msg);
 };
 
-class Eroare_Declarare_Minciuna : public Exceptii_Joc {
-public:
-    explicit Eroare_Declarare_Minciuna(const std::string& msg);
-};
+// class Eroare_Declarare_Minciuna : public Exceptii_Joc {
+// public:
+//     explicit Eroare_Declarare_Minciuna(const std::string& msg);
+// };
 
 class Eroare_Inceput_Liars_Dice : public Exceptii_Joc {
 public:

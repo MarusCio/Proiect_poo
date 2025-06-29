@@ -133,6 +133,7 @@ conțin fișiere generate și nu ne ajută să le versionăm.
 - [dexonline](https://dexonline.ro/definitie/opac/definitii) 
 - [Template Method](https://www.geeksforgeeks.org/template-method-design-pattern/)
 - [Template Method](https://refactoring.guru/design-patterns/template-method/cpp/example)
+- [Singleton](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns/Creational_Patterns#Factory)
 - [Singleton](https://refactoring.guru/design-patterns/singleton/cpp/example)
 - adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
 
