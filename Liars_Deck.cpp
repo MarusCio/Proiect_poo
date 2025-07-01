@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <limits>
 
+#include "functii_template.h"
 
-Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti &pachet): Joc(nume_jucatori.size(),nullptr), carti(pachet) {
+
+Liars_Deck::Liars_Deck(const std::vector<std::string> &nume_jucatori, Pachet_Carti<std::string>& pachet): Joc(nume_jucatori.size(),nullptr), carti(pachet) {
     for (const auto& nume : nume_jucatori) {
         jucatori_initiali.emplace_back(std::make_unique<Player_Deck>(nume,pachet,0));
     }
@@ -85,7 +87,7 @@ bool Liars_Deck::Minte(Player_Deck &jucator_crt, Player_Deck &adversar, const Ta
 }
 
 std::vector<Player_Deck *> Liars_Deck::Jucatori_Activi(
-    const std::vector<std::unique_ptr<Player_Deck>> &jucatori_initiali, Pachet_Carti &carti_, const int dif) {
+    const std::vector<std::unique_ptr<Player_Deck>> &jucatori_initiali, Pachet_Carti<std::string>& carti_, const int dif) {
     std::vector<Player_Deck*> activi;
 
     // std::cout<<dif<<" ";
@@ -229,7 +231,7 @@ int Liars_Deck::Get_Lungime_Max() const {
     for (int i = 0; i <= dificultate; ++i) {
         const auto& player = jucatori_initiali[i];
         if (player->Alive() && !player->Fara_Carti()) {
-            lungime_max = std::max(lungime_max, static_cast<int>(player->Get_Nume().length()));
+            lungime_max = Max(lungime_max, static_cast<int>(player->Get_Nume().length()));
         }
     }
     return lungime_max;
@@ -248,10 +250,11 @@ std::ostream & operator<<(std::ostream &os, const Liars_Deck &joc) {
         if (player_deck->Alive() && !player_deck->Fara_Carti()) {
             os << player_deck->Get_Padding(max_nume_length)<<" | Glont: "<<player_deck->Get_Sansa()<<"/6 | Mana: ";
 
-            for (const auto& carte : player_deck->Get_Mana()) {
-                os << carte << " ";
-            }
-            os << std::endl;
+            Afis_Mana(player_deck->Get_Mana());
+            // for (const auto& carte : player_deck->Get_Mana()) {
+            //     os << carte << " ";
+            // }
+            // os << std::endl;
         }
     }
     os << "---------------------" << std::endl;

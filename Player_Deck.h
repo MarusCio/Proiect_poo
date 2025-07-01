@@ -18,7 +18,7 @@ class Player_Deck : public Player {
 public:
 
     Player_Deck();
-    Player_Deck(const std::string& nume_, Pachet_Carti& mana_, int sansa_ = 0);
+    Player_Deck(const std::string& nume_, Pachet_Carti<std::string>& mana_, int sansa_ = 0);
     Player_Deck(const Player_Deck& x);
     Player_Deck& operator=(const Player_Deck& x);
     ~Player_Deck() override;
@@ -28,7 +28,7 @@ public:
     void Mana_Ramasa(std::vector<int> indecsi);
     bool Alege_Carti();
     [[nodiscard]] bool Alive() const override;
-    void Reset_Carti(Pachet_Carti& pachet);
+    void Reset_Carti(Pachet_Carti<std::string>& pachet);
     void Invarte_Revolver(int alt_glont);
     void Creste_Sansa_Glont();
     [[nodiscard]] int Get_Sansa() const;

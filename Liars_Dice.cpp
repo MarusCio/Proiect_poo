@@ -6,6 +6,7 @@
 #include "Exceptii_Joc.h"
 #include <algorithm>
 #include <limits>
+#include "functii_template.h"
 
 
 Liars_Dice::Liars_Dice(const std::vector<std::string> &nume_jucatori_, Zaruri &mana_zaruri): Joc(nume_jucatori_.size(),nullptr), zaruri(mana_zaruri) {
@@ -252,7 +253,7 @@ int Liars_Dice::Get_Lungime_Max() const {
     for (int i = 0; i <= dificultate; ++i) {
         const auto& player = jucatori_initiali[i];
         if (player->Alive()) {
-            lungime_max = std::max(lungime_max, static_cast<int>(player->Get_Nume().length()));
+            lungime_max = Max(lungime_max, static_cast<int>(player->Get_Nume().length()));
         }
     }
     return lungime_max;
@@ -269,10 +270,11 @@ std::ostream & operator<<(std::ostream &os, const Liars_Dice &joc) {
         if (player_dice->Alive()) {
             os << player_dice->Get_Padding(max_nume_length)<<" | Shot-uri: "<<player_dice->Get_Shot()<<"/2 | Zaruri: ";
 
-            for (const auto& zar : player_dice->Get_Mana()) {
-                os << zar << " ";
-            }
-            os << std::endl;
+            Afis_Mana(player_dice->Get_Mana());
+            // for (const auto& zar : player_dice->Get_Mana()) {
+            //     os << zar << " ";
+            // }
+            // os << std::endl;
         }
     }
     os << "---------------------" << std::endl;

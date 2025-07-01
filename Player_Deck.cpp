@@ -7,7 +7,7 @@
 
 Player_Deck::Player_Deck() = default;
 
-Player_Deck::Player_Deck(const std::string &nume_, Pachet_Carti &mana_, const int sansa_): Player(nume_), sansa(sansa_) {
+Player_Deck::Player_Deck(const std::string &nume_, Pachet_Carti<std::string>& mana_, const int sansa_): Player(nume_), sansa(sansa_) {
     mana = mana_.Extrage_Mana();
     glont = rand() % 6 + 1;
 }
@@ -120,7 +120,7 @@ bool Player_Deck::Alive() const {
     return sansa < glont;
 }
 
-void Player_Deck::Reset_Carti(Pachet_Carti &pachet) {
+void Player_Deck::Reset_Carti(Pachet_Carti<std::string>& pachet) {
     mana = pachet.Extrage_Mana();
 }
 

@@ -6,27 +6,60 @@
 #define PACHET_CARTI_H
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 
+template <typename T>
 class Pachet_Carti {
-    std::vector<std::string>carti;
-    inline static const std::vector<std::string> pachet={
-        "A", "A", "A", "A", "A", "A",
-        "K", "K", "K", "K", "K", "K",
-        "Q", "Q", "Q", "Q", "Q", "Q",
-        "JOKER", "JOKER"
+    std::vector<T>carti;
+    inline static const std::vector<T> pachet={
+        T("A"), T("A"), T("A"), T("A"), T("A"), T("A"),
+        T("K"), T("K"), T("K"), T("K"), T("K"), T("K"),
+        T("Q"), T("Q"), T("Q"), T("Q"), T("Q"), T("Q"),
+        T("JOKER"), T("JOKER")
     };
 
 public:
-    Pachet_Carti();
-    Pachet_Carti(const Pachet_Carti &x);
-    ~Pachet_Carti();
+    Pachet_Carti() :
+        carti{pachet} {}
 
-    Pachet_Carti& operator=(const Pachet_Carti &x);
-    void Amesteca_Pachet();
-    std::vector<std::string> Extrage_Mana();
+    Pachet_Carti(const Pachet_Carti &x): carti{x.carti} {}
 
-    friend std::ostream& operator<<(std::ostream& os,const std::vector<std::string>& mana);
+    ~Pachet_Carti() = default;
+
+    Pachet_Carti<T>& operator=(const Pachet_Carti<T> &x) {
+        carti = x.carti;
+        return *this;
+    }
+    void Amesteca_Pachet() {
+        carti= pachet;
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle(carti.begin(), carti.end(), g);
+    }
+
+    std::vector<T> Extrage_Mana() {
+
+        std::vector<T> mana;
+        for(int i=0;i<5;i++) {
+            mana.push_back(carti.back());
+            carti.pop_back();
+        }
+
+        return mana;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,const std::vector<T>& mana) {
+        os<<"Mana: ";
+        for(const auto & i : mana) {
+            os<<i<<" ";
+        }
+        return os;
+
+
+    }
+
 };
 
 std::ostream& operator<<(std::ostream& os,const std::vector<std::string>& mana);

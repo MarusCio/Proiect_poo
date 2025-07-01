@@ -17,11 +17,11 @@ class Liars_Deck : public Joc {
     //int dificultate;
     //std::vector<Player> players;
     Table table;
-    Pachet_Carti carti;
+    Pachet_Carti<std::string> carti;
     std::vector<std::unique_ptr<Player_Deck>> jucatori_initiali;
 
 public:
-    Liars_Deck(const std::vector<std::string>& nume_jucatori, Pachet_Carti& pachet);
+    Liars_Deck(const std::vector<std::string>& nume_jucatori, Pachet_Carti<std::string>& pachet);
     Liars_Deck(const Liars_Deck& x);
     Liars_Deck& operator=(const Liars_Deck& x);
     ~Liars_Deck() override;
@@ -30,7 +30,7 @@ public:
     static void Reset_Revolver(const std::vector<std::unique_ptr<Player_Deck>>& players_);
     [[nodiscard]] std::string Get_Nume_Joc() const override;
     static bool Minte(Player_Deck& jucator_crt, Player_Deck& adversar, const Table& masa);
-    static std::vector<Player_Deck*> Jucatori_Activi(const std::vector<std::unique_ptr<Player_Deck>>& jucatori_initiali, Pachet_Carti& carti_,const int dif);
+    static std::vector<Player_Deck*> Jucatori_Activi(const std::vector<std::unique_ptr<Player_Deck>>& jucatori_initiali, Pachet_Carti<std::string>& carti_, int dif);
 
     // void Initializare_Jucatori() override {
     //     for (auto& j : jucatori_initiali) {
